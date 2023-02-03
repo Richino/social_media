@@ -1,0 +1,8 @@
+{data[index]?.messages.map((key: any, index: number) => {
+    return (
+        <div key={index}>
+            <p className={`${key.me ? "bg-neutral-100 float-right" : "border border-neutral-200 float-left"}  p-5 rounded-3xl  w-[45%] `}>{key.message}</p>
+        </div>
+    );
+})}
+<div  ref={ref} className="sticky bottom-0"></div>
