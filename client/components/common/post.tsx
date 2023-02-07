@@ -7,7 +7,7 @@ import { ChangeEvent, useContext, useEffect, useState, useRef } from "react";
 import Avatar from "./avatar";
 import x from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { PostContext } from "../../app/context";
+import { App } from "../../app/context";
 import { IoChatbubbleOutline, IoPaperPlaneOutline } from "react-icons/io5";
 
 interface Props {
@@ -41,7 +41,7 @@ export default function Post(props: Props) {
 	const [text, setText] = useState("");
 	const [width, setWidth] = useState(window.innerWidth);
 
-	const { setPost } = useContext(PostContext);
+	const { setPost } = useContext(App);
 	useEffect(() => {
 		setData(post);
 		const handleResize = () => setWidth(window.innerWidth);

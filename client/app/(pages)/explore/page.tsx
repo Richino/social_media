@@ -1,10 +1,10 @@
 "use client";
 import { useContext, useState } from "react";
-import { PostContext } from "../../context";
+import { App } from "../../context";
 import Image from 'next/image'
 
 export default function Page() {
-	const { setPost } = useContext(PostContext);
+	const { setPost } = useContext(App);
 	const [data, setData] = useState([
 		"/assets/user/explore/0.png",
 		"/assets/user/explore/1.png",

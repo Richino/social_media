@@ -1,13 +1,15 @@
-"use client"
+"use client";
 import { createContext, useState } from "react";
-interface PostContext {
-	post: boolean;
-	setPost: (value: boolean) => void;
-}
 
-export const PostContext = createContext<PostContext>({ post: false, setPost: () => {} });
+export const App = createContext<any>({
+	post: false,
+	setPost: () => {},
+	user: { loading: true, user: {} },
+	setUser: () => {},
+});
 
 export const useMyContext = () => {
 	const [post, setPost] = useState(false);
-	return { post, setPost };
+	const [user, setUser] = useState({ loading: true, user: null });
+	return { post, setPost, user, setUser };
 };

@@ -18,10 +18,10 @@ export default function Page() {
 	}
 
 	return (
-		<div className="h-screen w-screen flex text-xs relative bg-zinc-50">
+		<div className="h-screen w-screen flex text-xs relative bg-neutral-50">
 			<div className=" w-[38vw] min-w-[500px] p-14 margin-b-24 flex items-center justify-center flex-col phone:w-full phone:min-w-[100%] phone:landscape:block overflow-y-auto landscape:min-w-[400px] landscape:p-10">
-				<form className="space-y-5 text-zinc-800 w-[80%] flex flex-col phone:w-[100%]">
-					<span className="text-zinc-700 font-bold text-4xl">Login</span>
+				<form className="space-y-5 text-neutral-800 w-[80%] flex flex-col phone:w-[100%]">
+					<span className="text-neutral-700 font-bold text-4xl">Login</span>
 					<div className="flex flex-col space-y-1">
 						<span>Email Address</span>
 						<input className="border p-2 rounded-lg placeholder:text-xs" type="email" placeholder="example@mail.com" name="email" value={data.email} onChange={input} />
@@ -33,7 +33,7 @@ export default function Page() {
 					<div className="flex justify-between items-center">
 						<div className="flex space-x-2 items-center">
 							<button
-								className={`w-10 min-w-[40px] flex items-center rounded-full transition-colors hover:cursor-pointer ${isChecked ? "bg-violet-600" : "bg-slate-400 "}`}
+								className={`w-10 min-w-[40px] flex items-center rounded-full transition-colors hover:cursor-pointer ${isChecked ? "bg-violet-600" : "bg-neutral-400 "}`}
 								onClick={(e) => {
 									e.preventDefault();
 									setChecked(!isChecked);

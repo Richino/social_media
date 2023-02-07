@@ -1,9 +1,14 @@
 "use client";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEventHandler, useState } from "react";
 import Gallery from "../../../components/common/gallery";
 import Link from "next/link";
-
+import axios from "axios";
 export default function Page() {
+
+    const instance = axios.create({
+        baseURL: "http://localhost:4000",
+        withCredentials: false,
+    });
 	const [isChecked, setChecked] = useState(false);
 	const [data, setData] = useState({
 		username: "",
@@ -20,6 +25,16 @@ export default function Page() {
 			[name]: value,
 		}));
 	}
+
+    function register(e: React.MouseEvent<HTMLButtonElement>){
+        e.preventDefault()
+        instance.post("/register",data).then(() =>{
+            console.log(1)
+        }).catch(()=>{
+            console.log(2)
+        })
+
+    }
 
 	return (
 		<div className="h-screen w-screen flex text-xs relative bg-slate-50 overflow-hidden">
@@ -73,7 +88,7 @@ export default function Page() {
 							</Link>
 						</div>
 					</div>
-					<button className="bg-violet-600 text-white p-2 mb-10 rounded w-full ">Register</button>
+					<button className="bg-violet-600 text-white p-2 mb-10 rounded w-full" onClick={register}>Register</button>
 					<div className="hidden phone:block landscape:block">
 						<span>Already have an account? </span>
 						<Link className="text-violet-600" href={"/login"}>

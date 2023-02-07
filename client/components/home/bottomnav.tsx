@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from "react";
 import { AiFillHome, AiOutlineHome, AiFillMessage, AiOutlineMessage } from "react-icons/ai";
 import { MdExplore, MdOutlineExplore } from "react-icons/md";
 import { VscDiffAdded } from "react-icons/vsc";
-import { PostContext } from "../../app/context";
+import {App } from "../../app/context";
 import nprogress from "nprogress";
 import "nprogress/nprogress.css";
 

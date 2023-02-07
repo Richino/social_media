@@ -3,11 +3,11 @@ import Avatar from "../../../components/common/avatar";
 import { TbGridDots } from "react-icons/tb";
 import { BsBookmark } from "react-icons/bs";
 import { useContext, useEffect, useState } from "react";
-import { PostContext } from "../../context";
+import { App } from "../../context";
 import Image from "next/image";
 
 export default function Page({ params }: any) {
-	const { setPost } = useContext(PostContext);
+	const { setPost } = useContext(App);
 	const [index, setIndex] = useState(1);
 	const [images, setImages] = useState([
 		"/assets/user/images/0.png",

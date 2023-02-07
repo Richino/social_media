@@ -1,9 +1,12 @@
 {
     "compilerOptions": {
-        "module": "NodeNext",
+        "allowSyntheticDefaultImports": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "module": "ES6",
         "moduleResolution": "Node",
         "target": "ES6",
         "sourceMap": true,
-        "outDir": "dist"
-    },"include": ["src/**/*"]
+        "outDir": "dist",
+        "rootDir": "./src"
+    },"include": ["src/**/*","src/*.d.ts"]
 }

@@ -5,7 +5,7 @@ import { AiFillHeart } from "react-icons/ai";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { RxShare1 } from "react-icons/rx";
 import { useContext } from "react";
-import { PostContext } from "../../app/context";
+import { App } from "../../app/context";
 
 interface Props {
 	fullname: string;
@@ -15,7 +15,7 @@ interface Props {
 	aspectRatio: string;
 }
 export default function PostFeed(props: Props) {
-	const { setPost } = useContext(PostContext);
+	const { setPost } = useContext(App);
 	return (
 		<div className=" bg-white  rounded-lg  p-2 pb-5 w-full tablet:phone:px-0 tablet:phone:rounded-none">
 			<div className="flex justify-between items-center p-3">
