@@ -4,12 +4,13 @@ import Gallery from "../../../components/common/gallery";
 import Link from "next/link";
 import axios from "axios";
 export default function Page() {
-
-    const instance = axios.create({
-        baseURL: "http://localhost:4000",
-        withCredentials: false,
-    });
+	const instance = axios.create({
+		baseURL: "http://localhost:4000",
+		withCredentials: false,
+	});
 	const [isChecked, setChecked] = useState(false);
+	const [error, setError] = useState(false);
+	const [message, setMessage] = useState("");
 	const [data, setData] = useState({
 		username: "",
 		fullname: "",
@@ -20,21 +21,26 @@ export default function Page() {
 
 	function input(e: ChangeEvent<HTMLInputElement>) {
 		const { name, value } = e.target;
+		setMessage("");
+		setError(false);
 		setData((state) => ({
 			...state,
 			[name]: value,
 		}));
 	}
 
-    function register(e: React.MouseEvent<HTMLButtonElement>){
-        e.preventDefault()
-        instance.post("/register",data).then(() =>{
-            console.log(1)
-        }).catch(()=>{
-            console.log(2)
-        })
-
-    }
+	function register(e: React.MouseEvent<HTMLButtonElement>) {
+		e.preventDefault();
+		instance
+			.post("/register", data)
+			.then(() => {
+				console.log(1);
+			})
+			.catch((err) => {
+				setError(true);
+				setMessage(err.response.data);
+			});
+	}
 
 	return (
 		<div className="h-screen w-screen flex text-xs relative bg-slate-50 overflow-hidden">
@@ -75,8 +81,7 @@ export default function Page() {
 								onClick={(e) => {
 									e.preventDefault();
 									setChecked(!isChecked);
-								}}
-							>
+								}}>
 								<div className={`bg-white h-5 w-5 rounded-full m-[2px]  transition-transform ${isChecked ? "translate-x-4" : "translate-x-0"}`}></div>
 							</button>
 							<span>Keep me signed in</span>
@@ -88,16 +93,18 @@ export default function Page() {
 							</Link>
 						</div>
 					</div>
-					<button className="bg-violet-600 text-white p-2 mb-10 rounded w-full" onClick={register}>Register</button>
+					<button className="bg-violet-600 text-white p-2 mb-10 rounded w-full" onClick={register}>
+						Register
+					</button>
 					<div className="hidden phone:block landscape:block">
 						<span>Already have an account? </span>
 						<Link className="text-violet-600" href={"/login"}>
 							Login
 						</Link>
 					</div>
+					{error && <span className="w-full flex justify-center text-red-500">{message}</span>}
 				</form>
 			</div>
-
 			<Gallery />
 		</div>
 	);
