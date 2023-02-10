@@ -5,9 +5,12 @@ import { BsBookmark } from "react-icons/bs";
 import { useContext, useEffect, useState } from "react";
 import { App } from "../../context";
 import Image from "next/image";
+import axios from "axios";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Page({ params }: any) {
-	const { setPost } = useContext(App);
+	const pathname = usePathname();
+	const { setPost, setUser, user } = useContext(App);
 	const [index, setIndex] = useState(1);
 	const [images, setImages] = useState([
 		"/assets/user/images/0.png",
@@ -20,6 +23,25 @@ export default function Page({ params }: any) {
 		"/assets/user/images/7.png",
 		"/assets/user/images/8.jpeg",
 	]);
+	const instance = axios.create({
+		baseURL: "http://localhost:4000",
+		withCredentials: true,
+	});
+	useEffect(() => {
+        console.log(pathname)
+		const fetchData = async () => {
+			await instance
+				.post(`/user${pathname}`)
+				.then((res) => {
+					//setUser({ ...user, loading: false, user: res.data });
+				})
+				.catch(() => {
+					//setUser({ ...user, loading: false, user: null });
+					//if (pathname !== "/register") return router.push("/login");
+				});
+		};
+		fetchData()
+	}, []);
 	const [saved, setSaved] = useState(["/assets/user/saved/0.png", "/assets/user/saved/1.png", "/assets/user/saved/2.png", "/assets/user/saved/3.jpg", "/assets/user/saved/4.png"]);
 	return (
 		<>
@@ -91,7 +113,7 @@ export default function Page({ params }: any) {
 					{images.map((key, index) => {
 						return (
 							<div key={index} className=" h-full aspect-square  overflow-hidden hover:cursor-pointer relative" onClick={() => setPost(true)}>
-								<Image id="post-image" src={key} alt="post" className={`object-cover h-full w-full`} fill />
+								<Image id="post-image" src={key} alt="post" className={`object-cover h-full w-full`} fill sizes="(max-width: 261.34px) 100vw, 261.34px" priority={true} />
 							</div>
 						);
 					})}
@@ -100,7 +122,7 @@ export default function Page({ params }: any) {
 					{saved.map((key, index) => {
 						return (
 							<div key={index} className="aspect-square w-full  overflow-hidden hover:cursor-pointer relative" onClick={() => setPost(true)}>
-								<Image id="post-image" src={key} alt="post" className={`object-cover h-full w-full`} fill />
+								<Image id="post-image" src={key} alt="post" className={`object-cover h-full w-full`} fill sizes="(max-width: 261.34px) 100vw, 261.34px" priority={true} />
 							</div>
 						);
 					})}

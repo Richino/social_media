@@ -54,8 +54,7 @@ body {
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
-
-    ::-webkit-scrollbar {
+	::-webkit-scrollbar {
 		display: none;
 	}
 	.message-box {
@@ -159,4 +158,8 @@ em-emoji-picker {
 	color: inherit;
 	outline: none;
 	width: 100%;
+}
+
+.yes {
+	border-radius: 50% 50% 0px 0px;
 }

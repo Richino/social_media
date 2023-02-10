@@ -38,7 +38,7 @@ export default function Page() {
 				{data.map((key, index) => {
 					return (
 						<div key={index} className=" h-full aspect-square  overflow-hidden hover:cursor-pointer relative" onClick={() => setPost(true)}>
-							<Image id="post-image" src={key} alt="post" className={`object-cover h-full w-full`} fill  />
+							<Image id="post-image" src={key} alt="post" className={`object-cover h-full w-full`} fill sizes="(max-width: 253.34px) 100vw, 253.34px" priority={true}/>
 						</div>
 					);
 				})}

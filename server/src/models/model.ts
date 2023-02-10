@@ -8,7 +8,7 @@ const user = new mongoose.Schema({
 	bio: { type: String },
 	followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
 	following: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
-	avatar: { type: String },
+	avatar: { type: String, required: true  },
 	createdAt: { type: Date, default: Date.now },
 });
 

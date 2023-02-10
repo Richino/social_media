@@ -2,12 +2,22 @@
 import { ChangeEvent, useState } from "react";
 import Gallery from "../../../components/common/gallery";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+	const router = useRouter();
+	const [error, setError] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [message, setMessage] = useState("...");
 	const [isChecked, setChecked] = useState(false);
 	const [data, setData] = useState({
 		email: "",
 		password: "",
+	});
+	const instance = axios.create({
+		baseURL: "http://localhost:4000",
+		withCredentials: true,
 	});
 	function input(e: ChangeEvent<HTMLInputElement>) {
 		const { name, value } = e.target;
@@ -15,6 +25,27 @@ export default function Page() {
 			...state,
 			[name]: value,
 		}));
+	}
+
+	function login(e: any) {
+		e.preventDefault();
+		setError(false);
+		setMessage("message");
+		setLoading(true);
+		instance
+			.post("/login", data)
+			.then(() => {
+				setError(false);
+				setMessage("...");
+				setLoading(true);
+				router.push("/");
+			})
+			.catch((err) => {
+				setError(true);
+				setLoading(false);
+				setMessage(err.response.data);
+				setLoading(false);
+			});
 	}
 
 	return (
@@ -37,21 +68,23 @@ export default function Page() {
 								onClick={(e) => {
 									e.preventDefault();
 									setChecked(!isChecked);
-								}}
-							>
+								}}>
 								<div className={`bg-white h-5 w-5 rounded-full m-[2px]  transition-transform ${isChecked ? "translate-x-4" : "translate-x-0"}`}></div>
 							</button>
 							<span>Keep me signed in</span>
 						</div>
 						<span className=" text-violet-600">Forgot password</span>
 					</div>
-					<button className="bg-violet-600 text-white p-2 mb-10 rounded w-full ">Login</button>
+					<button className="bg-violet-600 text-white p-2 mb-10 rounded w-full " onClick={login}>
+						<span>{loading ? "Loading..." : "Register"}</span>
+					</button>
 					<div className="my-5 ">
 						<span>Don't have an account? </span>
 						<Link href={"/register"} className="text-violet-600">
 							Sign up
 						</Link>
 					</div>
+					<span className={`w-full justify-center flex text-red-500 ${error ? "visible" : "invisible"}`}>{message}</span>
 				</form>
 			</div>
 			<Gallery />

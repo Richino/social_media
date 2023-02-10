@@ -8,9 +8,13 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { RxHamburgerMenu } from "react-icons/rx";
 import nprogress from "nprogress";
 import "nprogress/nprogress.css";
+import { App } from "../../app/context";
+import { useContext } from "react";
 
 export default function Nav() {
 	const pathname = usePathname();
+	const { user } = useContext(App);
+	console.log();
 	nprogress.configure({ showSpinner: false });
 	return (
 		<>
@@ -43,11 +47,11 @@ export default function Nav() {
 								</div>
 							</Link>
 						)}
-						{pathname === "/stacy123" ? (
-							<Avatar story={false} height={42} width={42} image="/assets/user/profile.jpg" />
+						{pathname === "/" + user.user?.username ? (
+							<Avatar story={false} height={42} width={42} image={user.user?.avatar} />
 						) : (
-							<Link href={"/stacy123"} onClick={() => nprogress.start()}>
-								<Avatar story={false} height={42} width={42} image="/assets/user/profile.jpg" />
+							<Link href={"/" + user.user?.username} onClick={() => nprogress.start()}>
+								<Avatar story={false} height={42} width={42} image={user.user?.avatar} />
 							</Link>
 						)}
 					</div>

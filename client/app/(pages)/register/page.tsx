@@ -1,16 +1,20 @@
 "use client";
 import { ChangeEvent, MouseEventHandler, useState } from "react";
+import { useRouter } from "next/navigation";
 import Gallery from "../../../components/common/gallery";
 import Link from "next/link";
 import axios from "axios";
+import { MoonLoader } from "react-spinners";
 export default function Page() {
 	const instance = axios.create({
 		baseURL: "http://localhost:4000",
-		withCredentials: false,
+		withCredentials: true,
 	});
+	const router = useRouter();
 	const [isChecked, setChecked] = useState(false);
 	const [error, setError] = useState(false);
-	const [message, setMessage] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [message, setMessage] = useState("...");
 	const [data, setData] = useState({
 		username: "",
 		fullname: "",
@@ -21,7 +25,7 @@ export default function Page() {
 
 	function input(e: ChangeEvent<HTMLInputElement>) {
 		const { name, value } = e.target;
-		setMessage("");
+		setMessage("message");
 		setError(false);
 		setData((state) => ({
 			...state,
@@ -29,22 +33,27 @@ export default function Page() {
 		}));
 	}
 
-	function register(e: React.MouseEvent<HTMLButtonElement>) {
+	async function register(e: any) {
 		e.preventDefault();
-		instance
+		setError(false);
+		setMessage("message");
+		setLoading(true);
+		await instance
 			.post("/register", data)
-			.then(() => {
-				console.log(1);
-			})
+			.then(() => router.push("/"))
 			.catch((err) => {
 				setError(true);
+				setLoading(false);
 				setMessage(err.response.data);
+				setLoading(false);
 			});
 	}
 
 	return (
 		<div className="h-screen w-screen flex text-xs relative bg-slate-50 overflow-hidden">
-			<div className=" w-[38vw] min-w-[500px] p-14 margin-b-24 grid place-items-center phone:w-full phone:min-w-[100%] phone:landscape:block overflow-y-auto phone:landscape:min-w-[400px] phone:landscape:p-10 ">
+			<div
+				onSubmit={register}
+				className=" w-[38vw] min-w-[500px] p-14 margin-b-24 grid place-items-center phone:w-full phone:min-w-[100%] phone:landscape:block overflow-y-auto phone:landscape:min-w-[400px] phone:landscape:p-10 ">
 				<form className="space-y-5 text-zinc-800 w-[80%] flex flex-col phone:w-[100%] phone:landscape:w-[100%]">
 					<span className="text-zinc-700 font-bold text-4xl">Register</span>
 					<div className="flex flex-col space-y-1">
@@ -94,7 +103,7 @@ export default function Page() {
 						</div>
 					</div>
 					<button className="bg-violet-600 text-white p-2 mb-10 rounded w-full" onClick={register}>
-						Register
+						<span>{loading ? "Loading..." : "Register"}</span>
 					</button>
 					<div className="hidden phone:block landscape:block">
 						<span>Already have an account? </span>
@@ -102,7 +111,7 @@ export default function Page() {
 							Login
 						</Link>
 					</div>
-					{error && <span className="w-full flex justify-center text-red-500">{message}</span>}
+					<span className={`w-full justify-center flex text-red-500 ${error ? "visible" : "invisible"}`}>{message}</span>
 				</form>
 			</div>
 			<Gallery />

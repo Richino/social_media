@@ -12,7 +12,7 @@ export default function Explore() {
 				{images.map((key, index) => {
 					return (
 						<div key={index} className="relative aspect-square rounded overflow-hidden hover:cursor-pointer">
-							<Image src={key} alt="explore" className={`object-cover h-full w-full`}  fill />
+							<Image src={key} alt="explore" className={`object-cover h-full w-full`}  fill sizes="(max-width: 75.33px) 100vw, 75.33px"/>
 						</div>
 					);
 				})}
