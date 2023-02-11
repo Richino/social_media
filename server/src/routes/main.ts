@@ -8,6 +8,7 @@ router.get("/", auth, async (req: IRequest, res: Response) => {
 	const user = req.user;
 	console.log("here");
 	//const client = await connectDB();
+    //show followers post here
 	res.json(user);
 });
 

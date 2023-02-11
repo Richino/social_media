@@ -4,6 +4,7 @@ import { RiUserFollowLine } from "react-icons/ri";
 import data from "../../activities";
 import Avatar from "../common/avatar";
 import Header from "./header";
+import Image from "next/image";
 
 export default function Activity() {
 	const [users, setUsers] = useState(data);
@@ -19,11 +20,11 @@ export default function Activity() {
 								<b>{key.name}</b> {key.type === "post" ? "likes your post." : "started following you."} <span className="text-neutral-500">{key.posted}</span>
 							</span>
 							{key.type === "post" ? (
-								<div className=" hover:cursor-pointer shrink-0 bg-neutral-200 grid place-items-center  relative rounded overflow-hidden">
-									<img src={key.likedImage} alt="search icon" style={{ objectFit: "cover" }} className="h-[32px] w-[32px] " />
+								<div className=" hover:cursor-pointer shrink-0 bg-neutral-200 grid place-items-center  relative rounded overflow-hidden h-[32px] w-[32px]">
+									<Image src={key.likedImage} alt="search icon" style={{ objectFit: "cover" }} fill sizes="32px" />
 								</div>
 							) : (
-								<div className=" hover:cursor-pointer shrink-0 bg-violet-200 rounded-full  h-[32px] w-[32px]   grid place-items-center">
+								<div className=" hover:cursor-pointer shrink-0 bg-violet-200 rounded-full   h-[32px] w-[32px]  grid place-items-center">
 									<RiUserFollowLine size={17} color="#7c3aed" />
 								</div>
 							)}

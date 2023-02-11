@@ -9,7 +9,9 @@ router.post("/:username", async (req: Request, res: Response) => {
 	const username = req.params["username"];
 	const client = await connectDB();
 	let user = await client.collection("users").findOne({ username: username.toLowerCase() });
-	console.log(user);
+	delete user["email"];
+	delete user["password"];
+	return res.status(200).json(user);
 });
 
 export default router;

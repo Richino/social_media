@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import { ChangeEvent, useState } from "react";
 import Gallery from "../../../components/common/gallery";
