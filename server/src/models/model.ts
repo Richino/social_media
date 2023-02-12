@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-//production code
+//user
 const user = new mongoose.Schema({
 	fullname: { type: String, required: true, max: 25, min: 5 },
 	username: { type: String, required: true, unique: true, max: 25, min: 5 },
@@ -12,6 +12,7 @@ const user = new mongoose.Schema({
 	createdAt: { type: Date, default: Date.now },
 });
 
+//post
 const post = new mongoose.Schema({
 	author: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
 	caption: { type: String, required: true },

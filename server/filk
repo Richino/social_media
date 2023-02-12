@@ -1,0 +1,17 @@
+	const metadata = {
+		contentType: "image/jpeg",
+	};
+	const storageRef = ref(storage, "image/");
+	let image = [];
+	req.on("data", (chunk) => {
+		image.push(chunk);
+	});
+
+	req.on("end", () => {
+		const buffer = Buffer.concat(image);
+        console.log(buffer)
+		const bytes = new Uint8Array(buffer);
+		uploadBytes(storageRef, bytes, metadata).then((snapshot) => {
+			console.log("Uploaded an array!");
+		});
+	});

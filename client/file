@@ -1,8 +1,24 @@
-{data[index]?.messages.map((key: any, index: number) => {
-    return (
-        <div key={index}>
-            <p className={`${key.me ? "bg-neutral-100 float-right" : "border border-neutral-200 float-left"}  p-5 rounded-3xl  w-[45%] `}>{key.message}</p>
-        </div>
-    );
-})}
-<div  ref={ref} className="sticky bottom-0"></div>
+import Image from "next/image";
+
+export default function Create() {
+	return (
+		<div className="fixed flex items-center justify-center top-0 left-0 bg-black/75 z-50 h-screen w-full p-10">
+			<div className=" aspect-square h-full overflow-hidden grid place-items-center">
+				<div className="bg-white aspect-square w-full rounded">
+					<div className="p-2 border-b border-neutral-200 grid place-items-center">
+						<span>
+							<b>Create new post</b>
+						</span>
+					</div>
+					<div className="grid place-items-center h-full mt-[-33px]">
+						<div className="grid place-items-center gap-5">
+							<Image alt="create image" src={"assets/icons/gallery.svg"} height={80} width={80} />
+							<button className="bg-violet-500 text-white p-5 py-2 rounded-md">Select from computer</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+<Image alt="create image" src={image} fill style={{ objectFit: "contain" }} />

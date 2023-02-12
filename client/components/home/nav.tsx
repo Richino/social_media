@@ -10,10 +10,11 @@ import nprogress from "nprogress";
 import "nprogress/nprogress.css";
 import { App } from "../../app/context";
 import { useContext } from "react";
+import { IoIosAddCircleOutline } from "react-icons/io";
 
 export default function Nav() {
 	const pathname = usePathname();
-	const { user } = useContext(App);
+	const { user, openCreatePost } = useContext(App);
 	console.log();
 	nprogress.configure({ showSpinner: false });
 	return (
@@ -33,8 +34,8 @@ export default function Nav() {
 						<Search placeholder="Search here..." type="nav" />
 					</div>
 					<div className="shrink-0 flex gap-4 w-[250px] justify-end items-center  nestHub:justify-center">
-						<div className="bg-neutral-100 p-2 rounded-full hover:cursor-pointer shrink-0 h-[42px] w-[42px] grid place-items-center">
-							<VscDiffAdded size={18} />
+						<div className="bg-neutral-100 p-2 rounded-full hover:cursor-pointer shrink-0 h-[42px] w-[42px] grid place-items-center"  onClick={() => openCreatePost(true)}>
+							<IoIosAddCircleOutline size={22} />
 						</div>
 						{pathname === "/messages" ? (
 							<div className="bg-neutral-100 p-2 rounded-full hover:cursor-pointer shrink-0 h-[42px] w-[42px] grid place-items-center">

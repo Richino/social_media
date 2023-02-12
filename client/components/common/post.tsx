@@ -88,8 +88,8 @@ export default function Post(props: Props) {
 					</span>
 					<BsThreeDots size={16} className="hover:cursor-pointer" onClick={() => setPopup(true)} />
 				</div>
-				<div className=" flex items-center justify-center post-image-container">
-					<img id="post-image" src={props.post} alt="post" className={`object-contain  max-h-full `} />
+				<div className=" flex items-center justify-center post-image-container h-full bg-gray-700">
+					<img id="post-image" src={props.post} alt="post" className="h-full  object-contain" />
 				</div>
 			</div>
 			<div className="hidden justify-between border-b p-5 border-neutral-200 gap-4  bg-white phone:flex sticky top-[83px] flex-col">
@@ -151,8 +151,7 @@ export default function Post(props: Props) {
 												return;
 											}
 											setShow(postIndex);
-										}}
-									>
+										}}>
 										<span>
 											{show === postIndex ? "Hide replies" : "View replies"}({key?.replies.length})
 										</span>
@@ -190,7 +189,7 @@ export default function Post(props: Props) {
 
 				<div className="border-t border-neutral-200  w-full  flex flex-col  gap-2 items-center phone:hidden">
 					<div className="border-t border-neutral-200  w-full  flex justify-between p-5 gap-2 items-center">
-                    <AiOutlineHeart size={24} className="text-neutral-400"/>
+						<AiOutlineHeart size={24} className="text-neutral-400" />
 						<input type="text" placeholder="Add a comment..." className="w-full h-full text-sm placeholder:text-neutral-400" value={text} onChange={input} />
 						<button className="text-violet-500">
 							<IoPaperPlaneOutline size={24} />
@@ -200,7 +199,7 @@ export default function Post(props: Props) {
 			</div>
 
 			<div className="border-t border-neutral-200  w-full phone:flex  justify-between p-5 gap-2 items-center hidden bg-white fixed bottom-0">
-				<AiOutlineHeart size={24} className="text-neutral-400"/>
+				<AiOutlineHeart size={24} className="text-neutral-400" />
 				<input type="text" placeholder="Add a comment..." className="w-full h-full text-sm placeholder:text-neutral-400" value={text} onChange={input} />
 				<button className="text-violet-500">
 					<IoPaperPlaneOutline size={24} />
