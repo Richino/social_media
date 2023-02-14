@@ -11,7 +11,7 @@ export default function Create() {
 	const [url, setUrl] = useState<any>("/assets/black.jpg");
 	const [value, setValue] = useState("");
 	const [image, setImage] = useState<any>("");
-	const { user, openCreatePost } = useContext(App);
+	const { user, openCreatePost, setUserProfile, userProfile } = useContext(App);
 	const instance = axios.create({
 		baseURL: "http://localhost:4000",
 		withCredentials: true,
@@ -52,8 +52,9 @@ export default function Create() {
 									await instance
 										.post("/post/upload", formData)
 										.then((res) => {
-											console.log(res.data);
-											//openCreatePost(false)
+											console.log(res, " -> ", user.user.id);
+											if (res.data.author === user.user.id) setUserProfile({ ...userProfile, post: [res.data, ...userProfile.post] });
+											openCreatePost(false);
 										})
 										.catch((err) => console.log(err.message));
 								}}>
@@ -64,11 +65,7 @@ export default function Create() {
 					<div className={`place-items-center h-full mt-[-33px] ${index == 1 ? "grid" : "hidden"}`}>
 						<div className="grid place-items-center gap-5">
 							<Image alt="create image" src={"assets/icons/gallery.svg"} height={80} width={80} />
-							<button
-								className="bg-violet-500 text-white p-5 py-2 rounded-md"
-								onClick={() => {
-									document.getElementById("file-input")?.click();
-								}}>
+							<button className="bg-violet-500 text-white p-5 py-2 rounded-md" onClick={() => document.getElementById("file-input")?.click()}>
 								Select from computer
 							</button>
 							<input

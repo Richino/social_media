@@ -3,7 +3,7 @@
 import Avatar from "../../../components/common/avatar";
 import { TbGridDots } from "react-icons/tb";
 import { BsBookmark } from "react-icons/bs";
-import {AiOutlineCamera} from "react-icons/ai"
+import { AiOutlineCamera } from "react-icons/ai";
 import { useContext, useEffect, useState } from "react";
 import { App } from "../../context";
 import Image from "next/image";
@@ -12,7 +12,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 export default function Page({ params }: any) {
 	const pathname = usePathname();
-	const { setPost, setUser, user, userProfile, setUserProfile } = useContext(App);
+	const { setPost, setUser, user, userProfile, setUserProfile, setUserPost } = useContext(App);
 	const [index, setIndex] = useState(1);
 	const [images, setImages] = useState([
 		"/assets/user/images/0.png",
@@ -35,7 +35,7 @@ export default function Page({ params }: any) {
 			await instance
 				.post(`/user${pathname}`)
 				.then((res) => {
-					setUserProfile({ ...user, loading: false, user: res.data });
+					setUserProfile({ ...user, loading: false, user: res.data.user, post: res.data.post });
 				})
 				.catch(() => {
 					setUserProfile({ ...user, loading: false, user: null });
@@ -112,12 +112,19 @@ export default function Page({ params }: any) {
 				</div>
 
 				<div className={` ${index === 1 ? "block" : "hidden"}  max-w-[800px] w-full h-full`}>
-					{userProfile.user?.post ? (
-						<div className="grid-cols-3 w-full max-w-[800px] h-full gap-2  phone:h-auto phone:gap-[2px] pb-5">
-							{images.map((key, index) => {
+					{userProfile.post?.length && !userProfile.loading ? (
+						<div className="grid-cols-3 grid w-[800px] h-full gap-2  phone:h-auto phone:gap-[2px] pb-5">
+							{userProfile.post?.map((key: any, index: number) => {
 								return (
-									<div key={index} className=" h-full aspect-square  overflow-hidden hover:cursor-pointer relative" onClick={() => setPost(true)}>
-										<Image id="post-image" src={key} alt="post" className={`object-cover h-full w-full`} fill sizes="(max-width: 261.34px) 100vw, 261.34px" priority={true} />
+									<div
+										key={index}
+										className=" h-full aspect-square  overflow-hidden hover:cursor-pointer relative"
+										onClick={() => {
+											console.log(key);
+											setUserPost(key);
+											setPost(true);
+										}}>
+										<Image id="post-image" src={key.imageUrl} alt="post" style={{ objectFit: "cover" }} fill sizes="(max-width: 262px) 100vw" priority={true} />
 									</div>
 								);
 							})}
@@ -125,9 +132,9 @@ export default function Page({ params }: any) {
 					) : (
 						<div className="flex items-center justify-center  max-w-[800px] h-full gap-2  phone:h-auto phone:gap-[2px] pb-5 ">
 							<div className="flex items-center flex-col justify-center mt-24">
-                                <AiOutlineCamera size={84}/>
-                                <span className="text-2xl">No post yet</span>
-                            </div>
+								<AiOutlineCamera size={84} />
+								<span className="text-2xl">No post yet</span>
+							</div>
 						</div>
 					)}
 				</div>

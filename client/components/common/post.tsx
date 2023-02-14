@@ -10,6 +10,7 @@ import Picker from "@emoji-mart/react";
 import { App } from "../../app/context";
 import { IoChatbubbleOutline, IoPaperPlaneOutline } from "react-icons/io5";
 
+
 interface Props {
 	fullname: string;
 	usernameOrText: string;
@@ -55,7 +56,7 @@ export default function Post(props: Props) {
 
 	return (
 		<div id="post-modal" className="h-full w-full fixed top-0 left-0 bg-black/80 z-50 flex phone:flex-col phone:bg-neutral-100 phone:overflow-y-auto" onClick={hidePost}>
-			<AiOutlineClose color="white" size={40} className="hover:cursor-pointer ml-[20px] close" onClick={() => setPost(false)} />
+			<AiOutlineClose color="white" size={40} className="hover:cursor-pointer  close" onClick={() => setPost(false)} />
 			{popup && (
 				<div id="popup" className="fixed h-full w-full bg-black/80 z-50 flex items-center justify-center p-5" onClick={hidePopup}>
 					<div className="bg-white flex flex-col  rounded-md font-bold max-w-[300px] w-full ">
@@ -80,7 +81,7 @@ export default function Post(props: Props) {
 				</div>
 			</div>
 
-			<div id="post-image-container" className={` w-full  h-full p-10 phone:p-0 phone:mt-[56px] relative flex items-center justify-center `} onClick={hidePost}>
+			<div id="post-image-container" className={` w-full  h-full p-10 phone:p-0 phone:mt-[83px] relative flex items-center justify-center `} onClick={hidePost}>
 				<div className="bg-white p-5  place-items-center relative hidden  justify-between post-title">
 					<BsChevronLeft size={24} className=" hover:cursor-pointer" onClick={() => setPost(false)} />
 					<span className="text-base">
@@ -89,7 +90,7 @@ export default function Post(props: Props) {
 					<BsThreeDots size={16} className="hover:cursor-pointer" onClick={() => setPopup(true)} />
 				</div>
 				<div className=" flex items-center justify-center post-image-container h-full bg-gray-700">
-					<img id="post-image" src={props.post} alt="post" className="h-full  object-contain" />
+					<img id="post-image" src={props.post} alt="post" className="h-full w-full  object-contain" />
 				</div>
 			</div>
 			<div className="hidden justify-between border-b p-5 border-neutral-200 gap-4  bg-white phone:flex sticky top-[83px] flex-col">

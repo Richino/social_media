@@ -20,7 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
 	const router = useRouter();
 	const ref = useRef<HTMLDivElement>(null);
-	const { post, setPost, user, setUser, createPost } = useContext(App);
+	const { post, setPost, user, setUser, createPost, userPost } = useContext(App);
 
 	useEffect(() => {
 		ref.current?.scrollTo({ top: 0 });
@@ -50,7 +50,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 			{pathname === "/login" || pathname === "/register" ? null : <Nav />}
 			{pathname === "/login" || pathname === "/register" ? null : <Sidenav />}
 			{createPost && <Create />}
-			{post && <Post fullname="Joseph Rogan" usernameOrText="@jrkrogan258" avatar="/assets/users/1.jpg" post="/assets/feeds/joseph/3.png" />}
+			{post && <Post fullname={user.user?.fullname} usernameOrText={user.user?.username} avatar={user.user?.avatar} post={userPost.imageUrl} />}
 			{children}
 			{pathname === "/login" || pathname === "/register" ? null : <Bottomnav />}
 		</div>

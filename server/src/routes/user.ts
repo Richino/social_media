@@ -11,7 +11,8 @@ router.post("/:username", async (req: Request, res: Response) => {
 	let user = await client.collection("users").findOne({ username: username.toLowerCase() });
 	delete user["email"];
 	delete user["password"];
-	return res.status(200).json(user);
+	let post = await client.collection("posts").find({ author: user._id }).sort({ createdAt: -1 }).toArray();
+	return res.status(200).json({ user, post });
 });
 
 export default router;

@@ -15,7 +15,7 @@ const user = new mongoose.Schema({
 //post
 const post = new mongoose.Schema({
 	author: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
-	caption: { type: String, required: true },
+	caption: { type: String},
 	imageUrl: { type: String, required: true },
 	likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
 	comments: [
