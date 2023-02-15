@@ -12,19 +12,8 @@ import { usePathname, useRouter } from "next/navigation";
 
 export default function Page({ params }: any) {
 	const pathname = usePathname();
-	const { setPost, setUser, user, userProfile, setUserProfile, setUserPost } = useContext(App);
+	const { setPost, setUser, user, userProfile, setUserProfile, setUserPost, setChangeProfile } = useContext(App);
 	const [index, setIndex] = useState(1);
-	const [images, setImages] = useState([
-		"/assets/user/images/0.png",
-		"/assets/user/images/1.png",
-		"/assets/user/images/2.png",
-		"/assets/user/images/3.jpg",
-		"/assets/user/images/4.png",
-		"/assets/user/images/5.png",
-		"/assets/user/images/6.png",
-		"/assets/user/images/7.png",
-		"/assets/user/images/8.jpeg",
-	]);
 	const instance = axios.create({
 		baseURL: "http://localhost:4000",
 		withCredentials: true,
@@ -34,13 +23,8 @@ export default function Page({ params }: any) {
 		const fetchData = async () => {
 			await instance
 				.post(`/user${pathname}`)
-				.then((res) => {
-					setUserProfile({ ...user, loading: false, user: res.data.user, post: res.data.post });
-				})
-				.catch(() => {
-					setUserProfile({ ...user, loading: false, user: null });
-					//if (pathname !== "/register") return router.push("/login");
-				});
+				.then((res) => setUserProfile({ ...user, loading: false, user: res.data.user, post: res.data.post }))
+				.catch(() => setUserProfile({ ...user, loading: false, user: null }));
 		};
 		fetchData();
 	}, []);
@@ -50,7 +34,7 @@ export default function Page({ params }: any) {
 			<div className=" flex h-max w-full flex-col items-center gap-5  text-sm tablet:phone:block ">
 				<div className="item flex p-5 pt-0 pb-0 tablet:phone:w-full">
 					<div className="p-5 px-0">
-						<div className="h-[100px] w-[100px]">
+						<div className="h-[100px] w-[100px]" onClick={() => setChangeProfile(true)}>
 							<Avatar story={false} height={100} width={100} image={userProfile.user?.avatar} />
 						</div>
 					</div>
@@ -113,7 +97,7 @@ export default function Page({ params }: any) {
 
 				<div className={` ${index === 1 ? "block" : "hidden"}  h-full w-full max-w-[800px]`}>
 					{userProfile.post?.length && !userProfile.loading ? (
-						<div className="grid h-full w-[800px] grid-cols-3 gap-2  pb-5 phone:h-auto phone:gap-[2px]">
+						<div className="grid h-full w-full max-w-[800px] grid-cols-3 gap-2  pb-5 phone:h-auto phone:gap-[2px]">
 							{userProfile.post?.map((key: any, index: number) => {
 								return (
 									<div
