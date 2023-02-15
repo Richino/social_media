@@ -17,7 +17,7 @@ export default function Header(props: Props) {
 	}
 
 	return (
-		<div className="flex justify-between items-center p-5">
+		<div className="flex items-center justify-between p-5">
 			<span className="text-sm ">
 				<b>{props.title}</b>
 			</span>

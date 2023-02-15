@@ -17,15 +17,15 @@ interface Props {
 export default function PostFeed(props: Props) {
 	const { setPost } = useContext(App);
 	return (
-		<div className=" bg-white  rounded-lg  p-2 pb-5 w-full tablet:phone:px-0 tablet:phone:rounded-none">
-			<div className="flex justify-between items-center p-3">
+		<div className=" w-full  rounded-lg  bg-white p-2 pb-5 tablet:phone:rounded-none tablet:phone:px-0">
+			<div className="flex items-center justify-between p-3">
 				<User fullname={props.fullname} usernameOrText={props.usernameOrText} avatar={props.avatar} />
 				<BsThreeDots size={16} className="hover:cursor-pointer" />
 			</div>
-			<div className={`relative w-full rounded overflow-hidden hover:cursor-pointer tablet:phone:rounded-none ${props.aspectRatio}`} onClick={() => setPost(true)}>
+			<div className={`relative w-full overflow-hidden rounded hover:cursor-pointer tablet:phone:rounded-none ${props.aspectRatio}`} onClick={() => setPost(true)}>
 				<img src={props.post} alt="post" style={{ objectFit: "cover" }} className={`h-full`} />
 			</div>
-			<div className="p-3 py-2 flex justify-between items-center">
+			<div className="flex items-center justify-between p-3 py-2">
 				<div className="flex gap-2">
 					<AiFillHeart size={22} color="#7c3aed" />
 					<IoChatbubbleOutline size={20} />

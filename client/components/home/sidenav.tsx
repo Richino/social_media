@@ -13,8 +13,8 @@ import "nprogress/nprogress.css";
 export default function Sidenav() {
 	const pathname = usePathname();
 	return (
-		<div className="h-full min-w-min bg-white  border-r border-slate-200  tablet:flex hidden flex-col items-center p-5 gap-12 sticky top-0 left-0 justify-between overflow-y-auto overflow-x-hidden tablet:phone:hidden side-nav">
-			<span className="title text-2xl font-bold pb-10">M</span>
+		<div className="side-nav sticky top-0  left-0 hidden  h-full min-w-min flex-col items-center justify-between gap-12 overflow-y-auto overflow-x-hidden border-r border-slate-200 bg-white p-5 tablet:flex tablet:phone:hidden">
+			<span className="title pb-10 text-2xl font-bold">M</span>
 			<div className="flex flex-col items-center  gap-12">
 				{pathname === "/" ? (
 					<Link href={"/"}>
@@ -25,7 +25,7 @@ export default function Sidenav() {
 						<AiOutlineHome className="hover:cursor-pointer" size={24} onClick={() => nprogress.start()} />
 					</Link>
 				)}
-				<div className="hover:cursor-pointer shrink-0">
+				<div className="shrink-0 hover:cursor-pointer">
 					<img src={"/assets/icons/search.svg"} alt="search icon" className="h-[20px]" />
 				</div>
 				{pathname === "/explore" ? (

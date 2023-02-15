@@ -12,6 +12,8 @@ export const App = createContext<any>({
 	openCreatePost: () => {},
 	userPost: {},
 	setUserPost: () => {},
+	changeProfile: false,
+	setChangeProfile: () => {},
 });
 
 export const useMyContext = () => {
@@ -20,5 +22,6 @@ export const useMyContext = () => {
 	const [userProfile, setUserProfile] = useState({ loading: true, user: null, post: [] });
 	const [createPost, openCreatePost] = useState(false);
 	const [userPost, setUserPost] = useState({});
-	return { post, setPost, user, setUser, userProfile, setUserProfile, createPost, openCreatePost,userPost,setUserPost };
+	const [changeProfile, setChangeProfile] = useState(false);
+	return { post, setPost, user, setUser, userProfile, setUserProfile, createPost, openCreatePost, userPost, setUserPost, changeProfile, setChangeProfile };
 };

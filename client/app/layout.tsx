@@ -7,7 +7,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html>
 			<head />
-			<body className="text-xs bg-neutral-100">
+			<body className="bg-neutral-100 text-xs">
 				<App.Provider value={value}>{children}</App.Provider>
 			</body>
 		</html>

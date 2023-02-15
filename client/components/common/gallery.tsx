@@ -8,12 +8,12 @@ export default function Gallery() {
 	}, []);
 
 	return (
-		<div className=" h-full w-full grid place-items-center phone:hidden">
-			<div className="h-full w-full relative ">
-				<div className="h-full w-full bg-black/30 absolute top-0 left-0 z-50 grid place-items-center p-5">
+		<div className=" grid h-full w-full place-items-center phone:hidden">
+			<div className="relative h-full w-full ">
+				<div className="absolute top-0 left-0 z-50 grid h-full w-full place-items-center bg-black/30 p-5">
 					<div className="grid place-items-center">
-						<h1 className="title text-white text-7xl">Moments</h1>
-						<span className="title text-white text-3xl">Share your journeys here</span>
+						<h1 className="title text-7xl text-white">Moments</h1>
+						<span className="title text-3xl text-white">Share your journeys here</span>
 					</div>
 				</div>
 

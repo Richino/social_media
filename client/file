@@ -22,3 +22,17 @@ export default function Create() {
 	);
 }
 <Image alt="create image" src={image} fill style={{ objectFit: "contain" }} />
+
+
+<div id="popup" className="fixed h-full w-full bg-black/80 z-50 flex items-center justify-center p-5" onClick={hidePopup}>
+    <div className="bg-white flex flex-col  rounded-md font-bold max-w-[300px] w-full ">
+        <button className="py-4 border-b border-neutral-200 text-red-600">Report</button>
+        <button className="py-4 border-b border-neutral-200 text-red-600">Unfollow</button>
+        <button className="py-4 border-b border-neutral-200">Share</button>
+        <button className="py-4 border-b border-neutral-200">Go to post</button>
+        <button className="py-4 border-b border-neutral-200">Copy link</button>
+        <button className="py-4" onClick={() => setPopup(false)}>
+            Cancel
+        </button>
+    </div>
+</div>

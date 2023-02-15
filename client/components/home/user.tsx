@@ -6,13 +6,13 @@ interface Props {
 }
 export default function User(props: Props) {
 	return (
-		<div className="flex gap-2 w-full overflow-hidden ">
+		<div className="flex w-full gap-2 overflow-hidden ">
 			<Avatar story={false} height={42} width={42} image={props.avatar} />
-			<div className="flex flex-col justify-center gap-[2px] w-full">
-				<span className="truncate w-[calc(100%-60px)]">
+			<div className="flex w-full flex-col justify-center gap-[2px]">
+				<span className="w-[calc(100%-60px)] truncate">
 					<b>{props.fullname}</b>
 				</span>
-				<span className="text-neutral-500 truncate w-[calc(100%-60px)]">{props.usernameOrText}</span>
+				<span className="w-[calc(100%-60px)] truncate text-neutral-500">{props.usernameOrText}</span>
 			</div>
 		</div>
 	);

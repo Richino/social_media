@@ -50,33 +50,33 @@ export default function Page() {
 	}
 
 	return (
-		<div className="h-screen w-screen flex text-xs relative bg-neutral-50">
-			<div className=" w-[38vw] min-w-[500px] p-14 margin-b-24 flex items-center justify-center flex-col phone:w-full phone:min-w-[100%] phone:landscape:block overflow-y-auto landscape:min-w-[400px] landscape:p-10">
-				<form className="space-y-5 text-neutral-800 w-[80%] flex flex-col phone:w-[100%]">
-					<span className="text-neutral-700 font-bold text-4xl">Login</span>
+		<div className="relative flex h-screen w-screen bg-neutral-50 text-xs">
+			<div className=" margin-b-24 flex w-[38vw] min-w-[500px] flex-col items-center justify-center overflow-y-auto p-14 phone:w-full phone:min-w-[100%] landscape:min-w-[400px] landscape:p-10 phone:landscape:block">
+				<form className="flex w-[80%] flex-col space-y-5 text-neutral-800 phone:w-[100%]">
+					<span className="text-4xl font-bold text-neutral-700">Login</span>
 					<div className="flex flex-col space-y-1">
 						<span>Email Address</span>
-						<input className="border p-2 rounded-lg placeholder:text-xs" type="email" placeholder="example@mail.com" name="email" value={data.email} onChange={input} />
+						<input className="rounded-lg border p-2 placeholder:text-xs" type="email" placeholder="example@mail.com" name="email" value={data.email} onChange={input} />
 					</div>
 					<div className="flex flex-col space-y-1 ">
 						<span>Password</span>
-						<input className="border p-2 rounded-lg placeholder:text-xs" type="password" placeholder="password" name="password" value={data.password} onChange={input} />
+						<input className="rounded-lg border p-2 placeholder:text-xs" type="password" placeholder="password" name="password" value={data.password} onChange={input} />
 					</div>
-					<div className="flex justify-between items-center">
-						<div className="flex space-x-2 items-center">
+					<div className="flex items-center justify-between">
+						<div className="flex items-center space-x-2">
 							<button
-								className={`w-10 min-w-[40px] flex items-center rounded-full transition-colors hover:cursor-pointer ${isChecked ? "bg-violet-600" : "bg-neutral-400 "}`}
+								className={`flex w-10 min-w-[40px] items-center rounded-full transition-colors hover:cursor-pointer ${isChecked ? "bg-violet-600" : "bg-neutral-400 "}`}
 								onClick={(e) => {
 									e.preventDefault();
 									setChecked(!isChecked);
 								}}>
-								<div className={`bg-white h-5 w-5 rounded-full m-[2px]  transition-transform ${isChecked ? "translate-x-4" : "translate-x-0"}`}></div>
+								<div className={`m-[2px] h-5 w-5 rounded-full bg-white  transition-transform ${isChecked ? "translate-x-4" : "translate-x-0"}`}></div>
 							</button>
 							<span>Keep me signed in</span>
 						</div>
 						<span className=" text-violet-600">Forgot password</span>
 					</div>
-					<button className="bg-violet-600 text-white p-2 mb-10 rounded w-full " onClick={login}>
+					<button className="mb-10 w-full rounded bg-violet-600 p-2 text-white " onClick={login}>
 						<span>{loading ? "Loading..." : "Register"}</span>
 					</button>
 					<div className="my-5 ">
@@ -85,7 +85,7 @@ export default function Page() {
 							Sign up
 						</Link>
 					</div>
-					<span className={`w-full justify-center flex text-red-500 ${error ? "visible" : "invisible"}`}>{message}</span>
+					<span className={`flex w-full justify-center text-red-500 ${error ? "visible" : "invisible"}`}>{message}</span>
 				</form>
 			</div>
 			<Gallery />
