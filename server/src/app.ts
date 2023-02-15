@@ -27,6 +27,6 @@ app.use("/login", login);
 app.use("/user", user);
 
 //controllers//
-app.use("/post", post);
+app.use("/image", post);
 
 app.listen(PORT, () => console.log("server started "));

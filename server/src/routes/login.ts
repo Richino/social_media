@@ -16,7 +16,7 @@ router.post("/", async (req: Request, res: Response) => {
 	if (!user) return res.status(400).send("Email or password is incorrect");
 	const match = await bcrypt.compare(password, user["password"]);
 	if (!match) res.status(400).send("Email or password is incorrect");
-	const token = jwt.sign({ id: user._id, username: user["username"], fullname: user["fullname"], avatar: user["avatar"] }, process.env["SECRET"], { expiresIn: "5h" });
+	const token = jwt.sign({ id: user._id }, process.env["SECRET"], { expiresIn: "5h" });
 	res.cookie("auth", token, { httpOnly: true, sameSite: "strict", maxAge: 5 * 60 * 60 * 1000 });
 	//close database
 	client.close();

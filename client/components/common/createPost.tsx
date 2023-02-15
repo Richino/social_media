@@ -11,13 +11,13 @@ export default function Create() {
 	const [url, setUrl] = useState<any>("/assets/black.jpg");
 	const [value, setValue] = useState("");
 	const [image, setImage] = useState<any>("");
-	const { user, openCreatePost, setUserProfile, userProfile } = useContext(App);
+	const { user, openCreatePost, setUserProfile, userProfile,setChangeProfile } = useContext(App);
 	const instance = axios.create({
 		baseURL: "http://localhost:4000",
 		withCredentials: true,
 		headers: { "Content-Type": "multipart/form-data" },
 	});
-	//	instance.defaults.headers.post["Content-Type"] = "multipart/form-data";
+
 	return (
 		<div
 			id="create-post"
@@ -50,9 +50,8 @@ export default function Create() {
 									formData.append("image", image);
 									formData.append("caption", value);
 									await instance
-										.post("/post/upload", formData)
+										.post("/image/post/upload", formData)
 										.then((res) => {
-											console.log(res, " -> ", user.user.id);
 											if (res.data.author === user.user.id) setUserProfile({ ...userProfile, post: [res.data, ...userProfile.post] });
 											openCreatePost(false);
 										})

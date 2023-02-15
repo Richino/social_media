@@ -44,7 +44,6 @@ export default function Post(props: Props) {
 
 	const { setPost, user } = useContext(App);
 	useEffect(() => {
-		console.log(user.user?.id, " -> ", props.author);
 		setData(post);
 		const handleResize = () => setWidth(window.innerWidth);
 		window.addEventListener("resize", handleResize);
@@ -60,7 +59,7 @@ export default function Post(props: Props) {
 			<AiOutlineClose color="white" size={40} className="close  hover:cursor-pointer" onClick={() => setPost(false)} />
 			{popup && (
 				<>
-					{user.user?.id === props.author ? (
+					{user.user?._id === props.author ? (
 						<div id="popup" className="fixed z-50 flex h-full w-full items-center justify-center bg-black/80 p-5" onClick={hidePopup}>
 							<div className="flex w-full max-w-[300px]  flex-col rounded-md bg-white font-bold ">
 								<button className="border-b border-neutral-200 py-4 text-violet-500">Edit</button>
@@ -112,7 +111,7 @@ export default function Post(props: Props) {
 				<div className="flex justify-between">
 					<User fullname={props.fullname} avatar={props.avatar} usernameOrText={props.usernameOrText} />
 					<div className="flex items-center gap-2">
-						{user.user?.id !== props.author && (
+						{user.user?._id !== props.author && (
 							<button className="rounded-md border border-violet-500 p-2  px-4 text-violet-500 transition-colors hover:bg-violet-500 hover:text-white">
 								<b>Follow</b>
 							</button>
@@ -126,7 +125,7 @@ export default function Post(props: Props) {
 					<div className="flex justify-between">
 						<User fullname={props.fullname} avatar={props.avatar} usernameOrText={props.usernameOrText} />
 						<div className="flex items-center gap-2">
-							{user.user?.id !== props.author && (
+							{user.user?._id !== props.author && (
 								<button className="rounded-md border border-violet-500 p-2  px-4 text-violet-500 transition-colors hover:bg-violet-500 hover:text-white">
 									<b>Follow</b>
 								</button>

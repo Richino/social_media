@@ -14,7 +14,7 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 
 export default function Nav() {
 	const pathname = usePathname();
-	const { user, openCreatePost } = useContext(App);
+	const { user, openCreatePost,changeProfile } = useContext(App);
 	console.log();
 	nprogress.configure({ showSpinner: false });
 	return (
@@ -49,7 +49,7 @@ export default function Nav() {
 							</Link>
 						)}
 						{pathname === "/" + user.user?.username ? (
-							<Avatar story={false} height={42} width={42} image={user.user?.avatar} />
+							<Avatar story={false} height={42} width={42} image={user.user?.avatar}/>
 						) : (
 							<Link href={"/" + user.user?.username} onClick={() => nprogress.start()}>
 								<Avatar story={false} height={42} width={42} image={user.user?.avatar} />

@@ -71,7 +71,7 @@ router.post("/", async (req: Request, res: Response) => {
 	//create user
 	user.save((err, user) => {
 		if (err) return res.status(400).send("User already exist");
-		const token = jwt.sign({ id: user._id, username, fullname, avatar }, process.env["SECRET"], { expiresIn: "5h" });
+		const token = jwt.sign({ id: user._id }, process.env["SECRET"], { expiresIn: "5h" });
 		res.cookie("auth", token, { httpOnly: true, sameSite: "strict", maxAge: 5 * 60 * 60 * 1000 });
 		//close database
 		client.close();

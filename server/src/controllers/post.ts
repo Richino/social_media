@@ -8,10 +8,11 @@ import auth from "../auth/index.js";
 import "dotenv/config";
 import multer from "multer";
 import { Post } from "../models/model.js";
+import { ObjectId } from "mongodb";
 const router = Router();
 const upload = multer();
 
-router.post("/upload", auth, upload.any(), async (req: IRequest, res: Response) => {
+router.post("/post/upload", auth, upload.any(), async (req: IRequest, res: Response) => {
 	const caption = req.body.caption;
 	const author = req.user.id;
 	console.log(caption, author);
@@ -36,12 +37,51 @@ router.post("/upload", auth, upload.any(), async (req: IRequest, res: Response) 
 				if (err) {
 					console.log(err);
 				}
+				client.close();
 				return res.status(200).json(post);
 			});
 		})
 		.catch((err) => {
 			if (err) res.status(500).send("Image failed to upload");
 		});
+});
+
+router.post("/profile/upload", auth, upload.single("image"), async (req: IRequest, res: Response) => {
+	const user = req.user.id;
+
+	const client = await connectDB();
+
+	const metadata = {
+		contentType: "image/jpeg",
+	};
+	const storageRef = ref(storage, `${user}/avatar/image`);
+	const bytes = new Uint8Array(req.file.buffer);
+	console.log(user);
+	try {
+		uploadBytes(storageRef, bytes, metadata).then(async (data) => {
+			const imageUrl = await getDownloadURL(ref(storage, data.metadata.fullPath));
+			await client
+				.collection("users")
+				.updateOne({ _id: new ObjectId(user) }, { $set: { avatar: imageUrl } })
+				.then(() => res.status(200).json(imageUrl));
+		});
+	} catch (err) {
+		return res.status(500).send("Image failed to upload");
+	}
+});
+
+router.post("/profile/delete", auth, async (req: IRequest, res: Response) => {
+	try {
+		const user = req.user.id;
+		const client = await connectDB();
+		const imageUrl = await getDownloadURL(ref(storage, "default/default.png"));
+		await client
+			.collection("users")
+			.updateOne({ _id: new ObjectId(user) }, { $set: { avatar: imageUrl } })
+			.then(() => res.status(200).json(imageUrl));
+	} catch (err) {
+		return res.status(500).send("Image failed to delete");
+	}
 });
 
 export default router;

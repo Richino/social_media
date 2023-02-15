@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
 	const router = useRouter();
 	const ref = useRef<HTMLDivElement>(null);
-	const { post, setPost, user, setUser, createPost, userPost } = useContext(App);
+	const { post, setPost, user, setUser, createPost, userPost, changeProfile } = useContext(App);
 
 	useEffect(() => {
 		ref.current?.scrollTo({ top: 0 });
@@ -31,9 +31,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 			await instance
 				.get("/app")
 				.then((res) => {
-					console.log(1);
-
-					//user not loading
 					setUser({ ...user, loading: false, user: res.data });
 					console.log(1);
 				})
@@ -51,7 +48,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 			{pathname === "/login" || pathname === "/register" ? null : <Nav />}
 			{pathname === "/login" || pathname === "/register" ? null : <Sidenav />}
 			{createPost && <Create />}
-			{<EditAvatar />}
+			{changeProfile && <EditAvatar />}
 			{post && <Post fullname={user.user?.fullname} usernameOrText={user.user?.username} avatar={user.user?.avatar} post={userPost.imageUrl} author={userPost.author} />}
 			{children}
 			{pathname === "/login" || pathname === "/register" ? null : <Bottomnav />}
