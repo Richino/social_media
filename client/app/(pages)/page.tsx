@@ -14,8 +14,20 @@ export default function Home() {
 			</div>
 			<div className="jusify-center   flex  h-max w-[500px] flex-col items-center gap-5 py-5 nestHub:w-[400px] tablet:phone:w-full">
 				<Stories />
-				<PostFeed fullname="Joseph Rogan" usernameOrText="@jrkrogan258" avatar="/assets/users/1.jpg" post="/assets/feeds/joseph/1.png" aspectRatio="aspect-[4/5]" />
-				<PostFeed fullname="Joseph Rogan" usernameOrText="@jrkrogan258" avatar="/assets/users/1.jpg" post="/assets/feeds/joseph/1.png" aspectRatio="aspect-square" />
+				<PostFeed
+					fullname="Joseph Rogan"
+					usernameOrText="@jrkrogan258"
+					avatar="/assets/users/1.jpg"
+					post="/assets/feeds/joseph/1.png"
+					aspectRatio="aspect-[4/5]"
+				/>
+				<PostFeed
+					fullname="Joseph Rogan"
+					usernameOrText="@jrkrogan258"
+					avatar="/assets/users/1.jpg"
+					post="/assets/feeds/joseph/1.png"
+					aspectRatio="aspect-square"
+				/>
 			</div>
 			<div className="cool sticky top-[59px] h-full w-[250px] shrink-0 space-y-5 overflow-y-auto py-5 tablet:hidden">
 				<Messages />

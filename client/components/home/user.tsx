@@ -12,7 +12,9 @@ export default function User(props: Props) {
 				<span className="w-[calc(100%-60px)] truncate">
 					<b>{props.fullname}</b>
 				</span>
-				<span className="w-[calc(100%-60px)] truncate text-neutral-500">{props.usernameOrText}</span>
+				<span className="w-[calc(100%-60px)] truncate text-neutral-500">
+					{props.usernameOrText}
+				</span>
 			</div>
 		</div>
 	);

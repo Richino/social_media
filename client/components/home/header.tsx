@@ -21,7 +21,9 @@ export default function Header(props: Props) {
 			<span className="text-sm ">
 				<b>{props.title}</b>
 			</span>
-			<button className="text-neutral-500" onClick={() => showAll(props.url)}>
+			<button
+				className="text-neutral-500"
+				onClick={() => showAll(props.url)}>
 				Show all
 			</button>
 		</div>

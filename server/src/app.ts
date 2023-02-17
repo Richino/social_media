@@ -6,6 +6,7 @@ import register from "./routes/register.js";
 import login from "./routes/login.js";
 import user from "./routes/user.js";
 import post from "./controllers/post.js";
+import search from "./controllers/search.js";
 const app = express();
 const PORT = 4000;
 const corsOptions = {
@@ -28,5 +29,6 @@ app.use("/user", user);
 
 //controllers//
 app.use("/image", post);
+app.use("/search", search);
 
 app.listen(PORT, () => console.log("server started "));

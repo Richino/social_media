@@ -21,7 +21,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
 	const router = useRouter();
 	const ref = useRef<HTMLDivElement>(null);
-	const { post, setPost, user, setUser, createPost, userPost, changeProfile } = useContext(App);
+	const {
+		post,
+		setPost,
+		user,
+		setUser,
+		createPost,
+		userPost,
+		changeProfile,
+	} = useContext(App);
 
 	useEffect(() => {
 		ref.current?.scrollTo({ top: 0 });
@@ -43,15 +51,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 		fetchData();
 	}, [pathname]);
 
-	return (!user?.loading && user.user) || pathname === "/login" || pathname === "/register" ? (
-		<div ref={ref} className="h-full w-full overflow-y-scroll phone:h-[calc(100%-50px)] tablet:flex tablet:phone:block">
+	return (!user?.loading && user.user) ||
+		pathname === "/login" ||
+		pathname === "/register" ? (
+		<div
+			ref={ref}
+			className="h-full w-full overflow-y-scroll phone:h-[calc(100%-50px)] tablet:flex tablet:phone:block">
 			{pathname === "/login" || pathname === "/register" ? null : <Nav />}
-			{pathname === "/login" || pathname === "/register" ? null : <Sidenav />}
+			{pathname === "/login" || pathname === "/register" ? null : (
+				<Sidenav />
+			)}
 			{createPost && <Create />}
 			{changeProfile && <EditAvatar />}
-			{post && <Post fullname={user.user?.fullname} usernameOrText={user.user?.username} avatar={user.user?.avatar} post={userPost.imageUrl} author={userPost.author} />}
+			{post && (
+				<Post
+					fullname={user.user?.fullname}
+					usernameOrText={user.user?.username}
+					avatar={user.user?.avatar}
+					post={userPost.imageUrl}
+					author={userPost.author}
+				/>
+			)}
 			{children}
-			{pathname === "/login" || pathname === "/register" ? null : <Bottomnav />}
+			{pathname === "/login" || pathname === "/register" ? null : (
+				<Bottomnav />
+			)}
 		</div>
 	) : (
 		<div className="grid h-full w-full place-items-center text-2xl">{`Loading...`}</div>

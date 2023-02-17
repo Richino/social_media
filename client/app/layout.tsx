@@ -2,7 +2,11 @@
 import "../stylesheet/globals.css";
 import { App, useMyContext } from "./context";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
 	const value = useMyContext();
 	return (
 		<html>

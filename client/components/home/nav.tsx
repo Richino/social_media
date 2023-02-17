@@ -14,7 +14,7 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 
 export default function Nav() {
 	const pathname = usePathname();
-	const { user, openCreatePost,changeProfile } = useContext(App);
+	const { user, openCreatePost } = useContext(App);
 	console.log();
 	nprogress.configure({ showSpinner: false });
 	return (

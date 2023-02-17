@@ -11,11 +11,20 @@ export default function Stories() {
 			<div className="stories flex gap-4 overflow-y-auto p-5 pb-2">
 				{data.map((key, index) => {
 					return (
-						<div key={index} className="flex flex-col items-center gap-1">
+						<div
+							key={index}
+							className="flex flex-col items-center gap-1">
 							<div className="relative h-[65px] w-[65px]">
-								<Avatar height={65} width={65} story={true} image={key.avatar} />
+								<Avatar
+									height={65}
+									width={65}
+									story={true}
+									image={key.avatar}
+								/>
 							</div>
-							<span className="w-[60px] truncate">{key.fullname}</span>
+							<span className="w-[60px] truncate">
+								{key.fullname}
+							</span>
 						</div>
 					);
 				})}

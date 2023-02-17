@@ -19,11 +19,22 @@ export default function PostFeed(props: Props) {
 	return (
 		<div className=" w-full  rounded-lg  bg-white p-2 pb-5 tablet:phone:rounded-none tablet:phone:px-0">
 			<div className="flex items-center justify-between p-3">
-				<User fullname={props.fullname} usernameOrText={props.usernameOrText} avatar={props.avatar} />
+				<User
+					fullname={props.fullname}
+					usernameOrText={props.usernameOrText}
+					avatar={props.avatar}
+				/>
 				<BsThreeDots size={16} className="hover:cursor-pointer" />
 			</div>
-			<div className={`relative w-full overflow-hidden rounded hover:cursor-pointer tablet:phone:rounded-none ${props.aspectRatio}`} onClick={() => setPost(true)}>
-				<img src={props.post} alt="post" style={{ objectFit: "cover" }} className={`h-full`} />
+			<div
+				className={`relative w-full overflow-hidden rounded hover:cursor-pointer tablet:phone:rounded-none ${props.aspectRatio}`}
+				onClick={() => setPost(true)}>
+				<img
+					src={props.post}
+					alt="post"
+					style={{ objectFit: "cover" }}
+					className={`h-full`}
+				/>
 			</div>
 			<div className="flex items-center justify-between p-3 py-2">
 				<div className="flex gap-2">
@@ -41,10 +52,16 @@ export default function PostFeed(props: Props) {
 			<div className="px-3 pt-2">
 				<span>
 					<b>Joseph </b>
-					<span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dapibus magna et ornare porta. Proin id suscipit erat. In dictum mauris eget euismod cursus</span>
+					<span>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+						Aliquam dapibus magna et ornare porta. Proin id suscipit
+						erat. In dictum mauris eget euismod cursus
+					</span>
 				</span>
 			</div>
-			<button className="px-3 pt-2 text-neutral-500">View all 45 comments</button>
+			<button className="px-3 pt-2 text-neutral-500">
+				View all 45 comments
+			</button>
 		</div>
 	);
 }

@@ -26,8 +26,14 @@ export default function Messages() {
 			</div>
 			{data.map((key, index) => {
 				return (
-					<div key={index} className="flex items-center gap-2 p-2 px-5 transition-colors hover:cursor-pointer hover:bg-neutral-100">
-						<User fullname={key.fullname} avatar={key.avatar} usernameOrText={key.active} />
+					<div
+						key={index}
+						className="flex items-center gap-2 p-2 px-5 transition-colors hover:cursor-pointer hover:bg-neutral-100">
+						<User
+							fullname={key.fullname}
+							avatar={key.avatar}
+							usernameOrText={key.active}
+						/>
 					</div>
 				);
 			})}

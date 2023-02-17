@@ -13,11 +13,19 @@ export default function Gallery() {
 				<div className="absolute top-0 left-0 z-50 grid h-full w-full place-items-center bg-black/30 p-5">
 					<div className="grid place-items-center">
 						<h1 className="title text-7xl text-white">Moments</h1>
-						<span className="title text-3xl text-white">Share your journeys here</span>
+						<span className="title text-3xl text-white">
+							Share your journeys here
+						</span>
 					</div>
 				</div>
 
-				<Image src={image} alt="slide image" fill style={{ objectFit: "cover" }} priority />
+				<Image
+					src={image}
+					alt="slide image"
+					fill
+					style={{ objectFit: "cover" }}
+					priority
+				/>
 			</div>
 		</div>
 	);

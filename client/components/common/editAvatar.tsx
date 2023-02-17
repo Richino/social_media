@@ -5,18 +5,32 @@ import { App } from "../../app/context";
 import { useContext } from "react";
 
 export default function EditAvatar() {
-	const { user, setUser, setChangeProfile, userProfile, setUserProfile } = useContext(App);
+	const { user, setUser, setChangeProfile, userProfile, setUserProfile } =
+		useContext(App);
 	const instance = axios.create({
 		baseURL: "http://localhost:4000",
 		withCredentials: true,
 		headers: { "Content-Type": "multipart/form-data" },
 	});
-	const hidePopup = (e: React.MouseEvent<HTMLDivElement>) => (e.target as HTMLDivElement).id === "popup-profile" && setChangeProfile(false);
+	const hidePopup = (e: React.MouseEvent<HTMLDivElement>) =>
+		(e.target as HTMLDivElement).id === "popup-profile" &&
+		setChangeProfile(false);
 	return (
-		<div id="popup-profile" className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-black/80 p-5" onClick={hidePopup}>
+		<div
+			id="popup-profile"
+			className="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-black/80 p-5"
+			onClick={hidePopup}>
 			<div className="flex w-full max-w-[300px]  flex-col rounded-md bg-white font-bold ">
-				<span className="grid place-items-center border-b border-neutral-200 py-4">Change Profile Photo</span>
-				<button className="border-b border-neutral-200 py-4 text-violet-500" onClick={() => document.getElementById("file-input-upload-photo")?.click()}>
+				<span className="grid place-items-center border-b border-neutral-200 py-4">
+					Change Profile Photo
+				</span>
+				<button
+					className="border-b border-neutral-200 py-4 text-violet-500"
+					onClick={() =>
+						document
+							.getElementById("file-input-upload-photo")
+							?.click()
+					}>
 					Upload Photo
 				</button>
 				<button
@@ -25,8 +39,18 @@ export default function EditAvatar() {
 						await instance
 							.post("/image/profile/delete")
 							.then((res) => {
-								setUser({ ...user, user: { ...user.user, avatar: res.data } });
-								if (user.user._id === userProfile.user._id) setUserProfile({ ...userProfile, user: { ...userProfile.user, avatar: res.data } });
+								setUser({
+									...user,
+									user: { ...user.user, avatar: res.data },
+								});
+								if (user.user._id === userProfile.user._id)
+									setUserProfile({
+										...userProfile,
+										user: {
+											...userProfile.user,
+											avatar: res.data,
+										},
+									});
 								setChangeProfile(false);
 							})
 							.catch((err) => console.log(err.message));
@@ -51,8 +75,18 @@ export default function EditAvatar() {
 						await instance
 							.post("/image/profile/upload", formData)
 							.then((res) => {
-								setUser({ ...user, user: { ...user.user, avatar: res.data } });
-								if (user.user._id === userProfile.user._id) setUserProfile({ ...userProfile, user: { ...userProfile.user, avatar: res.data } });
+								setUser({
+									...user,
+									user: { ...user.user, avatar: res.data },
+								});
+								if (user.user._id === userProfile.user._id)
+									setUserProfile({
+										...userProfile,
+										user: {
+											...userProfile.user,
+											avatar: res.data,
+										},
+									});
 								setChangeProfile(false);
 							})
 							.catch((err) => console.log(err.message));

@@ -8,19 +8,27 @@ const user = new mongoose.Schema({
 	bio: { type: String },
 	followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
 	following: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
-	avatar: { type: String, required: true  },
+	avatar: { type: String, required: true },
 	createdAt: { type: Date, default: Date.now },
 });
 
 //post
 const post = new mongoose.Schema({
-	author: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
-	caption: { type: String},
+	author: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "users",
+		required: true,
+	},
+	caption: { type: String },
 	imageUrl: { type: String, required: true },
 	likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
 	comments: [
 		{
-			author: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
+			author: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "users",
+				required: true,
+			},
 			text: { type: String, required: true },
 			createdAt: { type: Date, default: Date.now },
 		},

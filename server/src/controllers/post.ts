@@ -15,8 +15,6 @@ const upload = multer();
 router.post("/post/upload", auth, upload.any(), async (req: IRequest, res: Response) => {
 	const caption = req.body.caption;
 	const author = req.user.id;
-	console.log(caption, author);
-
 	const client = await connectDB();
 
 	const metadata = {
