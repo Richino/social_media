@@ -1,6 +1,6 @@
-import { ref, uploadBytes, uploadString, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../config/firebase.js";
-import { Router, Request, Response } from "express";
+import { Router, Response } from "express";
 import connectDB from "../config/mongodb.js";
 import { v4 as uuidv4 } from "uuid";
 import { IRequest } from "../interfaces";
@@ -16,46 +16,55 @@ router.post("/post/upload", auth, upload.any(), async (req: IRequest, res: Respo
 	const caption = req.body.caption;
 	const author = req.user.id;
 	const client = await connectDB();
+	const session = client.startSession();
+	(await session).startTransaction();
 
-	const metadata = {
-		contentType: "image/jpeg",
-	};
-	const storageRef = ref(storage, `${author}/${uuidv4()}`);
-	const bytes = new Uint8Array(req.files[0].buffer);
-	uploadBytes(storageRef, bytes, metadata)
-		.then(async (data) => {
-			const imageUrl = await getDownloadURL(ref(storage, data.metadata.fullPath));
-			const post = new Post({
-				author,
-				caption,
-				imageUrl,
-			});
+	try {
+		const metadata = {
+			contentType: "image/jpeg",
+		};
+		const storageRef = ref(storage, `${author}/${uuidv4()}`);
+		const bytes = new Uint8Array(req.files[0].buffer);
+		uploadBytes(storageRef, bytes, metadata)
+			.then(async (data) => {
+				const imageUrl = await getDownloadURL(ref(storage, data.metadata.fullPath));
+				const post = new Post({
+					author,
+					caption,
+					imageUrl,
+				});
 
-			post.save((err, post) => {
-				if (err) {
-					console.log(err);
-				}
-				client.close();
-				return res.status(200).json(post);
+				post.save((err, post) => {
+					if (err) {
+						console.log(err);
+					}
+					client.close();
+					return res.status(200).json(post);
+				});
+			})
+			.catch((err) => {
+				if (err) res.status(500).send("Image failed to upload");
 			});
-		})
-		.catch((err) => {
-			if (err) res.status(500).send("Image failed to upload");
-		});
+	} catch (error) {
+		(await session).abortTransaction();
+	} finally {
+		(await session).endSession();
+	}
 });
 
 router.post("/profile/upload", auth, upload.single("image"), async (req: IRequest, res: Response) => {
 	const user = req.user.id;
 
 	const client = await connectDB();
+	const session = client.startSession();
+	(await session).startTransaction();
 
-	const metadata = {
-		contentType: "image/jpeg",
-	};
-	const storageRef = ref(storage, `${user}/avatar/image`);
-	const bytes = new Uint8Array(req.file.buffer);
-	console.log(user);
 	try {
+		const metadata = {
+			contentType: "image/jpeg",
+		};
+		const storageRef = ref(storage, `${user}/avatar/image`);
+		const bytes = new Uint8Array(req.file.buffer);
 		uploadBytes(storageRef, bytes, metadata).then(async (data) => {
 			const imageUrl = await getDownloadURL(ref(storage, data.metadata.fullPath));
 			await client
@@ -63,22 +72,28 @@ router.post("/profile/upload", auth, upload.single("image"), async (req: IReques
 				.updateOne({ _id: new ObjectId(user) }, { $set: { avatar: imageUrl } })
 				.then(() => res.status(200).json(imageUrl));
 		});
-	} catch (err) {
-		return res.status(500).send("Image failed to upload");
+	} catch (error) {
+		(await session).abortTransaction();
+	} finally {
+		(await session).endSession();
 	}
 });
 
 router.post("/profile/delete", auth, async (req: IRequest, res: Response) => {
+	const user = req.user.id;
+	const client = await connectDB();
+	const session = client.startSession();
+	(await session).startTransaction();
 	try {
-		const user = req.user.id;
-		const client = await connectDB();
 		const imageUrl = await getDownloadURL(ref(storage, "default/default.png"));
 		await client
 			.collection("users")
 			.updateOne({ _id: new ObjectId(user) }, { $set: { avatar: imageUrl } })
 			.then(() => res.status(200).json(imageUrl));
-	} catch (err) {
-		return res.status(500).send("Image failed to delete");
+	} catch (error) {
+		(await session).abortTransaction();
+	} finally {
+		(await session).endSession();
 	}
 });
 

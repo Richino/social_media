@@ -4,36 +4,54 @@ import { BsThreeDots, BsBookmark } from "react-icons/bs";
 import { AiFillHeart } from "react-icons/ai";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { RxShare1 } from "react-icons/rx";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { App } from "../../app/context";
+import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
 	fullname: string;
 	usernameOrText: string;
 	avatar: string;
 	post: string;
-	aspectRatio: string;
+	caption: string;
+	likes: Array<string>;
+	comments: Array<Object>;
+	id: string;
+	author: string;
 }
 export default function PostFeed(props: Props) {
-	const { setPost } = useContext(App);
+	const { setPost, setUserPost } = useContext(App);
 	return (
-		<div className=" w-full  rounded-lg  bg-white p-2 pb-5 tablet:phone:rounded-none tablet:phone:px-0">
+		<div className={`w-full  rounded-lg bg-white pb-5 tablet:phone:rounded-none tablet:phone:px-0 `}>
 			<div className="flex items-center justify-between p-3">
-				<User
-					fullname={props.fullname}
-					usernameOrText={props.usernameOrText}
-					avatar={props.avatar}
-				/>
+				<div className="w-max overflow-visible  hover:cursor-pointer">
+					<Link href={`/${props.usernameOrText}`}>
+						<User fullname={props.fullname} usernameOrText={props.usernameOrText} avatar={props.avatar} />
+					</Link>
+				</div>
 				<BsThreeDots size={16} className="hover:cursor-pointer" />
 			</div>
 			<div
-				className={`relative w-full overflow-hidden rounded hover:cursor-pointer tablet:phone:rounded-none ${props.aspectRatio}`}
-				onClick={() => setPost(true)}>
-				<img
+				className={`relative  w-full overflow-hidden   hover:cursor-pointer tablet:phone:rounded-none`}
+				onClick={() => {
+					let post = {
+						_id: props.id,
+						author: props.author,
+						caption: props.caption,
+						imageUrl: props.post,
+						avatar: props.avatar,
+					};
+					console.log(post);
+					setPost(true);
+					setUserPost(post);
+				}}>
+				<Image
 					src={props.post}
 					alt="post"
-					style={{ objectFit: "cover" }}
-					className={`h-full`}
+					style={{ objectFit: "contain", width: "100%", height: "auto", maxHeight: "640px" }}
+					width={1920}
+					height={1080}
 				/>
 			</div>
 			<div className="flex items-center justify-between p-3 py-2">
@@ -46,21 +64,17 @@ export default function PostFeed(props: Props) {
 			</div>
 			<div className="px-3">
 				<span>
-					<b>500</b> Likes
+					<b>{props.likes.length}</b> Likes
 				</span>
 			</div>
 			<div className="px-3 pt-2">
 				<span>
-					<b>Joseph </b>
-					<span>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Aliquam dapibus magna et ornare porta. Proin id suscipit
-						erat. In dictum mauris eget euismod cursus
-					</span>
+					<b>{props.fullname} </b>
+					<span>{props.caption}</span>
 				</span>
 			</div>
 			<button className="px-3 pt-2 text-neutral-500">
-				View all 45 comments
+				{props.comments.length ? `View all ${props.comments.length} comments` : "No comments"}
 			</button>
 		</div>
 	);

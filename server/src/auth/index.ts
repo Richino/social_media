@@ -9,5 +9,6 @@ export default function auth(req: IRequest, res: Response, next: NextFunction) {
 	if (!auth) return res.status(401).send("Unauthorized");
 	const token = jwt.verify(auth, secret);
 	req.user = token;
+	console.log(token);
 	next();
 }

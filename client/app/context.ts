@@ -4,7 +4,7 @@ import { createContext, useState } from "react";
 export const App = createContext<any>({
 	post: false,
 	setPost: () => {},
-	user: { loading: true, user: {} },
+	user: { loading: true, user: {}, feed: [] },
 	setUser: () => {},
 	userProfile: { loading: true, user: {}, post: [] },
 	setUserProfile: () => {},
@@ -14,11 +14,17 @@ export const App = createContext<any>({
 	setUserPost: () => {},
 	changeProfile: false,
 	setChangeProfile: () => {},
+	users: [],
+	setUsers: () => {},
+	isOpen: false,
+	setIsOpen: () => {},
+	mobileNav: false,
+	setMobileNav: () => {},
 });
 
 export const useMyContext = () => {
 	const [post, setPost] = useState(false);
-	const [user, setUser] = useState({ loading: true, user: null });
+	const [user, setUser] = useState({ loading: true, user: null, feed: [] });
 	const [userProfile, setUserProfile] = useState({
 		loading: true,
 		user: null,
@@ -27,6 +33,9 @@ export const useMyContext = () => {
 	const [createPost, openCreatePost] = useState(false);
 	const [userPost, setUserPost] = useState({});
 	const [changeProfile, setChangeProfile] = useState(false);
+	const [users, setUsers] = useState([]);
+	const [isOpen, setIsOpen] = useState(false);
+	const [mobileNav, setMobileNav] = useState(false);
 	return {
 		post,
 		setPost,
@@ -40,5 +49,11 @@ export const useMyContext = () => {
 		setUserPost,
 		changeProfile,
 		setChangeProfile,
+		users,
+		setUsers,
+		isOpen,
+		setIsOpen,
+		mobileNav,
+		setMobileNav,
 	};
 };

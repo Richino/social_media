@@ -118,7 +118,7 @@ body {
 
 	.post-image-container {
 		background: black;
-		height: calc(100% - 64px);
+		height: calc(100% - 83px);
 	}
 
 	.threedots {
@@ -163,4 +163,3 @@ em-emoji-picker {
 .yes {
 	border-radius: 50% 50% 0px 0px;
 }
-

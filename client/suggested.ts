@@ -20,7 +20,7 @@ const suggested = [
 		text: "Active 12h ago",
 	},
 	{
-		fullname: "Alexandra Becker",
+		fullname: "Alexandra Beckerrrrrrrrrrrrrrrrrrrrrttttt",
 		avatar: "/assets/messages/5.jpg",
 		text: "Active 1d ago",
 	},

@@ -11,7 +11,7 @@ export default function Messages() {
 		<div className="w-full rounded-lg  bg-white  pb-2">
 			<Header title="Messages" url="messages" />
 			<div className="px-5 pb-5">
-				<Search placeholder="Search messages" type="messages" />
+				<Search placeholder="Search messages" type="messages" mobile={false} />
 			</div>
 			<div className="mx-5 flex justify-between border-b border-neutral-200">
 				<div className="space-x-5">
@@ -29,11 +29,7 @@ export default function Messages() {
 					<div
 						key={index}
 						className="flex items-center gap-2 p-2 px-5 transition-colors hover:cursor-pointer hover:bg-neutral-100">
-						<User
-							fullname={key.fullname}
-							avatar={key.avatar}
-							usernameOrText={key.active}
-						/>
+						<User fullname={key.fullname} avatar={key.avatar} usernameOrText={key.active} />
 					</div>
 				);
 			})}

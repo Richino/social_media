@@ -5,7 +5,9 @@ import connectDB from "../config/mongodb.js";
 import { ObjectId } from "mongodb";
 const router = Router();
 //
-router.get("/", auth, async (req: IRequest, res: Response) => {
+router.post("/", auth, async (req: IRequest, res: Response) => {
+	const { skip } = req.body;
+	console.log(skip);
 	const client = await connectDB();
 	const session = client.startSession();
 	(await session).startTransaction();
@@ -18,6 +20,7 @@ router.get("/", auth, async (req: IRequest, res: Response) => {
 
 		let following: Array<string> = user["following"];
 		following.push(req.user.id);
+
 		const feeds = await client
 			.collection("posts")
 			.aggregate([
@@ -33,6 +36,7 @@ router.get("/", auth, async (req: IRequest, res: Response) => {
 				{
 					$sort: { createdAt: -1 },
 				},
+				{ $skip: skip },
 				{ $limit: 15 },
 				{
 					$project: {
@@ -45,16 +49,16 @@ router.get("/", auth, async (req: IRequest, res: Response) => {
 						likes: 1,
 						comments: 1,
 						author: 1,
-					}, //
+					},
 				},
 			])
 			.toArray();
-		return res.status(200).json({ user, feeds });
+		return res.status(200).json(feeds);
 	} catch (error) {
 		(await session).abortTransaction();
 	} finally {
 		(await session).endSession();
 	}
 });
-
-export default router;
+//
+export default router; //

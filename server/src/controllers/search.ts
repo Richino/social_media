@@ -1,47 +1,43 @@
-import {
-	ref,
-	uploadBytes,
-	uploadString,
-	getDownloadURL,
-} from "firebase/storage";
-import { storage } from "../config/firebase.js";
 import { Router, Request, Response } from "express";
 import connectDB from "../config/mongodb.js";
-import { v4 as uuidv4 } from "uuid";
-import { IRequest } from "../interfaces";
 import auth from "../auth/index.js";
 import "dotenv/config";
-import multer from "multer";
-import { Post } from "../models/model.js";
-import { ObjectId } from "mongodb";
 const router = Router();
-const upload = multer();
 
-router.post("/user", auth, async (req: IRequest, res: Response) => {
+router.post("/user", auth, async (req: Request, res: Response) => {
 	const username = req.body.username;
+	if (username.length === 0) return res.status(200).json([]);
 	const regex = new RegExp(`^${username}`, "i");
-
 	const client = await connectDB();
-	client.collection("users").createIndex({ user: 1 });
-	const users = await client
-		.collection("users")
-		.find(
-			{ username: { $regex: regex } },
-			{
-				projection: {
-					password: 0,
-					__v: 0,
-					email: 0,
-					followers: 0,
-					following: 0,
-					bio: 0,
-					createdAt: 0,
-				},
-			}
-		)
-		.toArray(); //
-
-	console.log(users);
+	const session = client.startSession();
+	(await session).startTransaction();
+	try {
+		client.collection("users").createIndex({ user: 1 });
+		await client
+			.collection("users")
+			.find(
+				{ username: { $regex: regex } },
+				{
+					projection: {
+						password: 0,
+						__v: 0,
+						email: 0,
+						followers: 0,
+						following: 0,
+						bio: 0,
+						createdAt: 0,
+					},
+				}
+			)
+			.toArray()
+			.then((user) => {
+				return res.status(200).json(user);
+			});
+	} catch (error) {
+		(await session).abortTransaction();
+	} finally {
+		(await session).endSession();
+	}
 });
 
 export default router;
