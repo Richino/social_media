@@ -51,17 +51,30 @@ export default function Page() {
 						);
 					})}
 				</div>
-				<div className={`left-0 h-full  w-full overflow-hidden phone:absolute phone:top-0  phone:z-50 phone:${index < 0 && "hidden"} ${index < 0 && "new-message"} bg-black`}>
-					<div className={`${defaultScreen ? "flex" : "hidden"} new-message h-full flex-col items-center justify-center gap-5 phone:hidden`}>
+				<div
+					className={`left-0 h-full  w-full overflow-hidden phone:absolute phone:top-0  phone:z-50 phone:${
+						index < 0 && "hidden"
+					} ${index < 0 && "new-message"} `}>
+					<div
+						className={`${
+							defaultScreen ? "flex" : "hidden"
+						} new-message h-full flex-col items-center justify-center gap-5 phone:hidden`}>
 						<div className="flex h-[120px] w-[120px] items-center justify-center rounded-full border-4 border-black p-5">
 							<IoPaperPlaneOutline size={50} />
 						</div>
 						<button className="rounded-md bg-violet-500 px-6 py-3 text-base text-white">New message</button>
 					</div>
-					<div className={`${defaultScreen ? "hidden" : "flex"}  messages relative h-full flex-col overflow-hidden`}>
+					<div
+						className={`${
+							defaultScreen ? "hidden" : "flex"
+						}  messages relative h-full flex-col overflow-hidden`}>
 						<div className="message-user-title absolute top-0  z-50 w-full border-b border-neutral-200 bg-white p-5 phone:grid phone:place-items-center">
 							<div className="message-user-cheveron left-[20px] phone:absolute  overPhone2:hidden">
-								<BsChevronLeft size={24} className=" hover:cursor-pointer" onClick={() => setIndex(-1)} />
+								<BsChevronLeft
+									size={24}
+									className=" hover:cursor-pointer"
+									onClick={() => setIndex(-1)}
+								/>
 							</div>
 							<div className="flex items-center gap-2">
 								<Avatar story={false} height={42} width={42} image={data[index]?.avatar} />
@@ -70,17 +83,32 @@ export default function Page() {
 								</span>
 							</div>
 						</div>
-						<div ref={ref} className=" mt-[83px] mb-[65px] flex h-full flex-col-reverse gap-5 overflow-y-scroll bg-white  p-5 ">
+						<div
+							ref={ref}
+							className=" mt-[83px] mb-[65px] flex h-full flex-col-reverse gap-5 overflow-y-scroll bg-white  p-5 ">
 							{data[index]?.messages.map((key: any, position: number) => {
 								return (
 									<div key={position} className="w-full">
-										<p className={`${key.me ? "float-right bg-neutral-100" : "float-left border border-neutral-200"}  w-[45%] rounded-3xl  p-5 phone:w-[60%]`}>{key.message}</p>
+										<p
+											className={`${
+												key.me
+													? "float-right bg-neutral-100"
+													: "float-left border border-neutral-200"
+											}  w-[45%] rounded-3xl  p-5 phone:w-[60%]`}>
+											{key.message}
+										</p>
 									</div>
 								);
 							})}
 						</div>
 						<div className="absolute bottom-0 flex w-full items-center  justify-between  gap-2 border-t border-neutral-200 bg-white p-5 ">
-							<input type="text" placeholder="Enter message here..." className="h-full w-full text-sm placeholder:text-neutral-400" value={text} onChange={input} />
+							<input
+								type="text"
+								placeholder="Enter message here..."
+								className="h-full w-full text-sm placeholder:text-neutral-400"
+								value={text}
+								onChange={input}
+							/>
 							<button className="text-violet-500">
 								<IoPaperPlaneOutline size={24} />
 							</button>

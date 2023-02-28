@@ -24,7 +24,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	const ref = useRef<HTMLDivElement>(null);
 	const [loading, setLoading] = useState(false);
 	const [skip, setSkip] = useState(15);
-	const { post, setPost, user, setUser, createPost, userPost, changeProfile, mobileNav } = useContext(App);
+	const {
+		post,
+		setPost,
+		user,
+		setUser,
+		createPost,
+		userPost,
+		changeProfile,
+		mobileNav,
+		setNotifications,
+		notifications,
+	} = useContext(App);
 
 	useEffect(() => {
 		ref.current?.scrollTo({ top: 0 });
@@ -35,11 +46,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 			await instance
 				.get("/app")
 				.then((res) => {
+					console.log(res);
+					setNotifications({ ...notifications, loading: false, data: res.data.notifications });
 					setUser({ ...user, loading: false, user: res.data.user, feed: res.data.feeds });
-					console.log(1);
 				})
 				.catch(() => {
-					console.log(2);
 					setUser({ ...user, loading: false, user: null });
 					if (pathname !== "/register") return router.push("/login");
 				});
@@ -51,24 +62,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 		<div
 			ref={ref}
 			onScroll={async () => {
+				if (pathname != "/") return;
 				const div = ref.current;
 				if (div != undefined) {
 					const result: number = div?.scrollHeight - div?.scrollTop;
-					console.log(result);
 					if (result <= 3029 && !loading) {
-						setSkip((current) => {
-							return current + 15;
-						});
+						setSkip((current) => current + 15);
 						setLoading(true);
 						await instance
 							.post("/feeds", { skip })
-							.then((res) => {
-								console.log(res.data);
-								setUser({ ...user, feed: [...user.feed, ...res.data] });
-							})
-							.finally(() => {
-								setLoading(false);
-							});
+							.then((res) => setUser({ ...user, feed: [...user.feed, ...res.data] }))
+							.finally(() => setLoading(false));
 					}
 				}
 			}}
@@ -80,9 +84,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 			{mobileNav && <MobileSearch />}
 			{post && (
 				<Post
-					fullname={user.user?.fullname}
-					usernameOrText={user.user?.username}
-					avatar={user.user?.avatar}
+					fullname={userPost.fullname}
+					usernameOrText={userPost.username}
+					avatar={userPost.avatar}
 					post={userPost.imageUrl}
 					author={userPost.author}
 				/>

@@ -1,17 +1,13 @@
-	const metadata = {
-		contentType: "image/jpeg",
-	};
-	const storageRef = ref(storage, "image/");
-	let image = [];
-	req.on("data", (chunk) => {
-		image.push(chunk);
-	});
-
-	req.on("end", () => {
-		const buffer = Buffer.concat(image);
-        console.log(buffer)
-		const bytes = new Uint8Array(buffer);
-		uploadBytes(storageRef, bytes, metadata).then((snapshot) => {
-			console.log("Uploaded an array!");
-		});
-	});
+{
+    $project: {
+        imageUrl: 1,
+        avatar: "$author_info.avatar",
+        author_username: "$author_info.username",
+        author_fullname: "$author_info.fullname",
+        _id: 1,
+        caption: 1,
+        likes: 1,
+        comments: 1,
+        author: 1,
+    }, //
+},

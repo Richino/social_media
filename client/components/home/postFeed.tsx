@@ -1,13 +1,14 @@
 "use client";
 import User from "./user";
 import { BsThreeDots, BsBookmark } from "react-icons/bs";
-import { AiFillHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { RxShare1 } from "react-icons/rx";
 import { useContext, useState } from "react";
 import { App } from "../../app/context";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 
 interface Props {
 	fullname: string;
@@ -19,9 +20,14 @@ interface Props {
 	comments: Array<Object>;
 	id: string;
 	author: string;
+	index: number;
 }
 export default function PostFeed(props: Props) {
-	const { setPost, setUserPost } = useContext(App);
+	const { setPost, setUserPost, user, setUser, feed } = useContext(App);
+	const instance = axios.create({
+		baseURL: "http://localhost:4000",
+		withCredentials: true,
+	});
 	return (
 		<div className={`w-full  rounded-lg bg-white pb-5 tablet:phone:rounded-none tablet:phone:px-0 `}>
 			<div className="flex items-center justify-between p-3">
@@ -38,11 +44,12 @@ export default function PostFeed(props: Props) {
 					let post = {
 						_id: props.id,
 						author: props.author,
+						fullname: props.fullname,
+						username: props.usernameOrText,
 						caption: props.caption,
 						imageUrl: props.post,
 						avatar: props.avatar,
 					};
-					console.log(post);
 					setPost(true);
 					setUserPost(post);
 				}}>
@@ -56,7 +63,40 @@ export default function PostFeed(props: Props) {
 			</div>
 			<div className="flex items-center justify-between p-3 py-2">
 				<div className="flex gap-2">
-					<AiFillHeart size={22} color="#7c3aed" />
+					{user.feed[props.index].likes.includes(user.user._id) ? (
+						<button
+							onClick={async () => {
+								await instance
+									.post(`/main_user/like/${props.id}`, {
+										user: user.user?._id,
+										author: props.author,
+									})
+									.then(() => {
+										let userFeedsCopy = { ...user };
+										const index = userFeedsCopy.feed[props.index].likes.indexOf(user.user?._id);
+										let array = [...userFeedsCopy.feed[props.index].likes];
+										array.splice(index, 1);
+										userFeedsCopy.feed[props.index].likes = array;
+										setUser(userFeedsCopy);
+									});
+							}}>
+							<AiFillHeart size={22} color="#7c3aed" />
+						</button>
+					) : (
+						<button
+							onClick={async () => {
+								await instance
+									.post(`/main_user/like/${props.id}`, { user: user.user?._id, author: props.author })
+									.then(() => {
+										let userFeedsCopy = { ...user };
+										userFeedsCopy.feed[props.index].likes.push(user.user?._id);
+										setUser(userFeedsCopy);
+									});
+							}}>
+							<AiOutlineHeart size={22} />
+						</button>
+					)}
+
 					<IoChatbubbleOutline size={20} />
 					<RxShare1 size={20} />
 				</div>

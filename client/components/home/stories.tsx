@@ -13,16 +13,11 @@ export default function Stories() {
 					return (
 						<div
 							key={index}
-							className="flex flex-col items-center gap-1">
+							className="flex w-[90px] max-w-[90px]  flex-col items-center justify-center gap-1 ">
 							<div className="relative h-[65px] w-[65px]">
-								<Avatar
-									height={65}
-									width={65}
-									story={true}
-									image={key.avatar}
-								/>
+								<Avatar height={65} width={65} story={true} image={key.avatar} />
 							</div>
-							<span className="w-[60px] truncate">
+							<span className=" grid w-[90px] max-w-[90px] place-items-center truncate ">
 								{key.fullname}
 							</span>
 						</div>

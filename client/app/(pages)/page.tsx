@@ -14,7 +14,6 @@ export default function Home() {
 		<div className="flex  w-full justify-center gap-5 ">
 			<div className=" cool sticky  top-[59px]  bottom-0 w-[250px] shrink-0 space-y-5 overflow-y-auto py-5 tablet:hidden">
 				<Activity />
-				<Explore />
 			</div>
 			<div className="jusify-center flex h-max w-[500px] flex-col items-center gap-5 py-5 nestHub:w-[400px] tablet:phone:w-full">
 				<Stories />
@@ -31,13 +30,13 @@ export default function Home() {
 							id={key._id}
 							author={key.author}
 							key={value}
+							index={value}
 						/>
 					);
 				})}
 			</div>
 			<div className="cool sticky top-[59px] h-full w-[250px] shrink-0 space-y-5 overflow-y-auto py-5 tablet:hidden">
 				<Messages />
-				<Suggestion />
 			</div>
 		</div>
 	);

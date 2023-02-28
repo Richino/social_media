@@ -10,6 +10,7 @@ import Picker from "@emoji-mart/react";
 import { App } from "../../app/context";
 import Image from "next/image";
 import { IoChatbubbleOutline, IoPaperPlaneOutline } from "react-icons/io5";
+import { usePathname } from "next/navigation";
 
 interface Props {
 	fullname: string;
@@ -42,6 +43,7 @@ export default function Post(props: Props) {
 	const [showPicker, setShowPicker] = useState(false);
 	const [text, setText] = useState("");
 	const [width, setWidth] = useState(window.innerWidth);
+	const pathname = usePathname();
 
 	const { setPost, user } = useContext(App);
 	useEffect(() => {
@@ -53,7 +55,6 @@ export default function Post(props: Props) {
 
 	const input = (e: ChangeEvent<HTMLInputElement>) => setText(e.target.value);
 	const hidePost = (e: any) => {
-		console.log(e.target.id, 1);
 		if ((e.target as HTMLDivElement).id === "post-image-container") setPost(false);
 		if ((e.target as HTMLDivElement).id === "post-image-container-2") setPost(false);
 	};
@@ -144,9 +145,17 @@ export default function Post(props: Props) {
 					<User fullname={props.fullname} avatar={props.avatar} usernameOrText={props.usernameOrText} />
 					<div className="flex items-center gap-2">
 						{user.user?._id !== props.author && (
-							<button className="rounded-md border border-violet-500 p-2  px-4 text-violet-500 transition-colors hover:bg-violet-500 hover:text-white">
-								<b>Follow</b>
-							</button>
+							<>
+								{user.user?.following.includes(props.author) ? (
+									<button className="rounded-md border border-violet-500 p-2  px-4 text-violet-500 transition-colors hover:bg-violet-500 hover:text-white">
+										<b>UnFollow</b>
+									</button>
+								) : (
+									<button className="rounded-md border border-violet-500 p-2  px-4 text-violet-500 transition-colors hover:bg-violet-500 hover:text-white">
+										<b>Follow</b>
+									</button>
+								)}
+							</>
 						)}
 						<BsThreeDots
 							size={16}
@@ -162,9 +171,17 @@ export default function Post(props: Props) {
 						<User fullname={props.fullname} avatar={props.avatar} usernameOrText={props.usernameOrText} />
 						<div className="flex items-center gap-2">
 							{user.user?._id !== props.author && (
-								<button className="rounded-md border border-violet-500 p-2  px-4 text-violet-500 transition-colors hover:bg-violet-500 hover:text-white">
-									<b>Follow</b>
-								</button>
+								<>
+									{user.user?.following.includes(props.author) ? (
+										<button className="rounded-md border border-violet-500 p-2  px-4 text-violet-500 transition-colors hover:bg-violet-500 hover:text-white">
+											<b>Unfollow</b>
+										</button>
+									) : (
+										<button className="rounded-md border border-violet-500 p-2  px-4 text-violet-500 transition-colors hover:bg-violet-500 hover:text-white">
+											<b>Follow</b>
+										</button>
+									)}
+								</>
 							)}
 							<BsThreeDots
 								size={16}

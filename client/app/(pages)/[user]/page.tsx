@@ -107,7 +107,9 @@ export default function Page({ params }: any) {
 														let array = [...userProfile.user.followers];
 														array.splice(index, 1);
 														await instance
-															.post(`/main_user/follow/${userProfile.user?._id}`)
+															.post(`/main_user/follow/${userProfile.user?._id}`, {
+																user: user.user?._id,
+															})
 															.then(() => {
 																setUserProfile({
 																	...userProfile,
@@ -128,7 +130,9 @@ export default function Page({ params }: any) {
 													className="rounded bg-violet-500 p-1 px-5 text-white tablet:phone:w-full"
 													onClick={async () => {
 														await instance
-															.post(`/main_user/follow/${userProfile.user?._id}`)
+															.post(`/main_user/follow/${userProfile.user?._id}`, {
+																user: user.user?._id,
+															})
 															.then(() => {
 																setUserProfile({
 																	...userProfile,
@@ -221,8 +225,18 @@ export default function Page({ params }: any) {
 											key={index}
 											className=" relative aspect-square  h-full overflow-hidden hover:cursor-pointer"
 											onClick={() => {
-												console.log(key);
-												setUserPost(key);
+												let post = {
+													_id: key._id,
+													author: key.author,
+													fullname: userProfile.user?.fullname,
+													username: userProfile.user?.username,
+													caption: key.caption,
+													imageUrl: key.imageUrl,
+													comments: key.comments,
+													likes: key.likes,
+													avatar: userProfile.user?.avatar,
+												};
+												setUserPost(post);
 												setPost(true);
 											}}>
 											<Image
