@@ -9,10 +9,11 @@ import user_controller from "./controllers/user.js";
 import post from "./controllers/post.js";
 import search from "./controllers/search.js";
 import feeds from "./controllers/feeds.js";
+import "dotenv/config";
 const app = express();
 const PORT = 4000;
 const corsOptions = {
-	origin: "http://localhost:3000",
+	origin: process.env["URL2"],
 	credentials: true,
 	optionSuccessStatus: 200,
 };
@@ -35,4 +36,5 @@ app.use("/search", search);
 app.use("/main_user", user_controller);
 app.use("/feeds", feeds);
 
+//app.listen(PORT, process.env["IP"], () => console.log("server started "));
 app.listen(PORT, () => console.log("server started "));

@@ -19,7 +19,7 @@ export default function Page({ params }: any) {
 
 	const [index, setIndex] = useState(1);
 	const instance = axios.create({
-		baseURL: "http://localhost:4000",
+		baseURL: process.env.url,
 		withCredentials: true,
 	});
 	const fetchData = async () => {
@@ -59,7 +59,7 @@ export default function Page({ params }: any) {
 		return <div className="grid h-full w-full place-items-center text-2xl">{`Loading...`}</div>;
 	} else if (!userProfile.user && !userProfile.loading) {
 		return (
-			<div className="grid h-[calc(100%-58px)] w-full place-items-center">
+			<div className="grid h-[calc(100%-58px)] w-full place-items-center overflow-y-auto">
 				<div className="flex flex-col items-center">
 					<span className="p-5 text-9xl">404</span>
 					<span className="text-5xl">Page Not Found</span>
@@ -75,7 +75,7 @@ export default function Page({ params }: any) {
 	} else {
 		return (
 			<>
-				<div className=" flex h-max w-full flex-col items-center gap-5  text-sm tablet:phone:block ">
+				<div className=" flex h-[calc(100%-58px)] w-full flex-col items-center gap-5 overflow-y-scroll  bg-neutral-100 text-sm tablet:phone:block">
 					<div className="item flex p-5 pt-0 pb-0 tablet:phone:w-full">
 						<div className="p-5 px-0">
 							<div
@@ -90,12 +90,12 @@ export default function Page({ params }: any) {
 						</div>
 						<div className="flex w-[400px]  flex-col gap-3 pl-5 pt-5">
 							<div className="flex items-center justify-between gap-4 tablet:phone:block tablet:phone:space-y-4 ">
-								<span className="text-base">
+								<span className="w-full text-base ">
 									<b>{userProfile.user?.fullname}</b>
 								</span>
-								<div className="flex items-center gap-2">
+								<div className="flex w-full items-center justify-end gap-2">
 									{user.user?._id !== userProfile.user?._id ? (
-										<div>
+										<div className="w-full ">
 											{userProfile.user?.followers.includes(user.user?._id) ? (
 												<button
 													className="rounded bg-violet-500 p-1 px-5 text-white tablet:phone:w-full"
@@ -183,14 +183,14 @@ export default function Page({ params }: any) {
 					</div>
 					<div className="hidden justify-between border-t border-slate-200 px-10 tablet:phone:flex">
 						<span className="flex flex-col items-center py-5">
-							<b>{userProfile.user?.post ? userProfile.user?.post.length : 0}</b>
+							<b>{userProfile.post?.length}</b>
 							<span> post</span>
 						</span>
 						<span className="flex flex-col items-center py-5">
-							<b>147</b> <span>followers</span>
+							<b>{userProfile.user?.followers.length}</b> <span>followers</span>
 						</span>
 						<span className="flex flex-col items-center py-5">
-							<b>628</b> <span>following</span>
+							<b>{userProfile.user?.following.length}</b> <span>following</span>
 						</span>
 					</div>
 					<div className="flex w-full max-w-[800px] justify-center  space-x-[60px] border-t border-neutral-200 px-5 pb-0 phone:p-0">
@@ -218,12 +218,12 @@ export default function Page({ params }: any) {
 
 					<div className={` ${index === 1 ? "block" : "hidden"}  h-full w-full max-w-[800px]`}>
 						{userProfile.post?.length && !userProfile.loading ? (
-							<div className="grid h-full w-full max-w-[800px] grid-cols-3 gap-2  pb-5 phone:h-auto phone:gap-[2px]">
+							<div className="grid h-full w-full max-w-[800px] grid-cols-3 gap-2   pb-5 phone:h-auto phone:gap-[2px]">
 								{userProfile.post?.map((key: any, index: number) => {
 									return (
 										<div
 											key={index}
-											className=" relative aspect-square  h-full overflow-hidden hover:cursor-pointer"
+											className=" relative aspect-square h-auto w-full  hover:cursor-pointer"
 											onClick={() => {
 												let post = {
 													_id: key._id,
@@ -247,7 +247,6 @@ export default function Page({ params }: any) {
 													objectFit: "cover",
 												}}
 												fill
-												sizes="(max-width: 262px) 100vw"
 												priority={true}
 											/>
 										</div>
@@ -275,7 +274,7 @@ export default function Page({ params }: any) {
 							return (
 								<div
 									key={index}
-									className="relative aspect-square  w-full overflow-hidden hover:cursor-pointer"
+									className="relative aspect-square   overflow-hidden hover:cursor-pointer"
 									onClick={() => setPost(true)}>
 									<Image
 										id="post-image"

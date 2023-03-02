@@ -31,6 +31,7 @@ router.post("/", async (req: Request, res: Response) => {
 		return res.status(200).send("User logged in");
 	} catch (error) {
 		(await session).abortTransaction();
+		console.log(error);
 	} finally {
 		(await session).endSession();
 	}

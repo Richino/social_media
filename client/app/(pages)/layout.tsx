@@ -13,8 +13,9 @@ import axios from "axios";
 import Create from "../../components/common/createPost";
 import EditAvatar from "../../components/common/editAvatar";
 import MobileSearch from "../../components/common/mobileSearch";
+
 const instance = axios.create({
-	baseURL: "http://localhost:4000",
+	baseURL: process.env.url,
 	withCredentials: true,
 });
 
@@ -71,12 +72,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						setLoading(true);
 						await instance
 							.post("/feeds", { skip })
-							.then((res) => setUser({ ...user, feed: [...user.feed, ...res.data] }))
+							.then((res) => {
+								console.log(res.data);
+								setUser({ ...user, feed: [...user.feed, ...res.data] });
+							})
 							.finally(() => setLoading(false));
 					}
 				}
 			}}
-			className="h-full w-full overflow-y-scroll  phone:h-[calc(100%-50px)] tablet:flex tablet:phone:block">
+			className="main h-screen w-full  overflow-hidden tablet:flex tablet:phone:block">
 			{pathname === "/login" || pathname === "/register" ? null : <Nav />}
 			{pathname === "/login" || pathname === "/register" ? null : <Sidenav />}
 			{createPost && <Create />}
@@ -89,6 +93,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					avatar={userPost.avatar}
 					post={userPost.imageUrl}
 					author={userPost.author}
+					id={userPost._id}
 				/>
 			)}
 			{children}

@@ -17,7 +17,7 @@ export default function Page() {
 		password: "",
 	});
 	const instance = axios.create({
-		baseURL: "http://localhost:4000",
+		baseURL: process.env.url,
 		withCredentials: true,
 	});
 	function input(e: ChangeEvent<HTMLInputElement>) {
@@ -28,12 +28,12 @@ export default function Page() {
 		}));
 	}
 
-	function login(e: any) {
+	async function login(e: any) {
 		e.preventDefault();
 		setError(false);
 		setMessage("message");
 		setLoading(true);
-		instance
+		await instance
 			.post("/login", data)
 			.then(() => {
 				setError(false);
@@ -50,8 +50,8 @@ export default function Page() {
 	}
 
 	return (
-		<div className="relative flex h-screen w-screen bg-neutral-50 text-xs">
-			<div className=" margin-b-24 flex w-[38vw] min-w-[500px] flex-col items-center justify-center overflow-y-auto p-14 phone:w-full phone:min-w-[100%] landscape:min-w-[400px] landscape:p-10 phone:landscape:block">
+		<div className="relative flex h-screen w-screen overflow-y-auto  text-xs">
+			<div className=" margin-b-24 flex w-[38vw] min-w-[500px] flex-col items-center justify-center  p-14 phone:h-screen phone:w-full phone:min-w-[100%] landscape:min-w-[400px] landscape:p-10 phone:landscape:block">
 				<form onSubmit={login} className="flex w-[80%] flex-col space-y-5 text-neutral-800 phone:w-[100%]">
 					<span className="text-4xl font-bold text-neutral-700">Login</span>
 					<div className="flex flex-col space-y-1">
@@ -63,6 +63,7 @@ export default function Page() {
 							name="email"
 							value={data.email}
 							onChange={input}
+							onFocus={(e) => e.preventDefault()}
 						/>
 					</div>
 					<div className="flex flex-col space-y-1 ">
@@ -74,6 +75,7 @@ export default function Page() {
 							name="password"
 							value={data.password}
 							onChange={input}
+							onFocus={(e) => e.preventDefault()}
 						/>
 					</div>
 					<div className="flex items-center justify-between">
@@ -98,7 +100,7 @@ export default function Page() {
 						<span className=" text-violet-600">Forgot password</span>
 					</div>
 					<button className="mb-10 w-full rounded bg-violet-600 p-2 text-white " onClick={login}>
-						<span>{loading ? "Loading..." : "Register"}</span>
+						<span>{loading ? "Loading..." : "Login"}</span>
 					</button>
 					<div className="my-5 ">
 						<span>Don't have an account? </span>

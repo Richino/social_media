@@ -3,7 +3,7 @@ import { IRequest } from "../interfaces/index.js";
 import connectDB from "../config/mongodb.js";
 import "dotenv/config";
 import { ObjectId } from "mongodb";
-import { Notification } from "../models/model.js";
+import { Notification, Comment } from "../models/model.js";
 import auth from "../auth/index.js";
 const router = Router();
 
@@ -90,6 +90,30 @@ router.post("/like/:id", auth, async (req: IRequest, res: Response) => {
 	} catch (error) {
 		(await session).abortTransaction();
 		console.log(error); //
+	} finally {
+		(await session).endSession();
+	}
+});
+
+router.post("/comment/:id", auth, async (req: IRequest, res: Response) => {
+	console.log("here");
+	const author = req.params["id"];
+	const { post } = req.body;
+	console.log(`author: ${author} -> post: ${post}`);
+	const client = await connectDB();
+	const session = client.startSession();
+	(await session).startTransaction();
+	try {
+		const comment = new Comment({
+			post: post,
+			author: author,
+			text: "test",
+		});
+
+		comment.save();
+	} catch (error) {
+		(await session).abortTransaction();
+		console.log(error);
 	} finally {
 		(await session).endSession();
 	}

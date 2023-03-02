@@ -11,8 +11,14 @@ import { App } from "../../app/context";
 import Image from "next/image";
 import { IoChatbubbleOutline, IoPaperPlaneOutline } from "react-icons/io5";
 import { usePathname } from "next/navigation";
+import axios from "axios";
+const instance = axios.create({
+	baseURL: process.env.url,
+	withCredentials: true,
+});
 
 interface Props {
+	id: string;
 	fullname: string;
 	usernameOrText: string;
 	avatar: string;
@@ -44,8 +50,7 @@ export default function Post(props: Props) {
 	const [text, setText] = useState("");
 	const [width, setWidth] = useState(window.innerWidth);
 	const pathname = usePathname();
-
-	const { setPost, user } = useContext(App);
+	const { setPost, user, userProfile } = useContext(App);
 	useEffect(() => {
 		setData(post);
 		const handleResize = () => setWidth(window.innerWidth);
@@ -291,7 +296,11 @@ export default function Post(props: Props) {
 							value={text}
 							onChange={input}
 						/>
-						<button className="text-violet-500">
+						<button
+							className="text-violet-500"
+							onClick={async () => {
+								await instance.post(`/main_user/comment/${user.user?._id}`, { post: props.id });
+							}}>
 							<IoPaperPlaneOutline size={24} />
 						</button>
 					</div>
@@ -307,7 +316,11 @@ export default function Post(props: Props) {
 					value={text}
 					onChange={input}
 				/>
-				<button className="text-violet-500">
+				<button
+					className="text-violet-500"
+					onClick={async () => {
+						await instance.post(`/main_user/comment/${user.user?._id}`, { post: props.id });
+					}}>
 					<IoPaperPlaneOutline size={24} />
 				</button>
 			</div>

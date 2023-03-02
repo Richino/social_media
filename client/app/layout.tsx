@@ -2,16 +2,12 @@
 import "../stylesheet/globals.css";
 import { App, useMyContext } from "./context";
 
-export default function RootLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
 	const value = useMyContext();
 	return (
-		<html>
+		<html className="h-screen w-screen">
 			<head />
-			<body className="bg-neutral-100 text-xs">
+			<body className="h-screen w-screen bg-white text-xs">
 				<App.Provider value={value}>{children}</App.Provider>
 			</body>
 		</html>

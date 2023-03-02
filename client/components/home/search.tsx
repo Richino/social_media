@@ -10,7 +10,7 @@ interface Props {
 }
 export default function Search(props: Props) {
 	const instance = axios.create({
-		baseURL: "http://localhost:4000",
+		baseURL: process.env.url,
 		withCredentials: true,
 	});
 	const { setUsers, setIsOpen, setMobileNav } = useContext(App);

@@ -13,7 +13,7 @@ export default function Create() {
 	const [image, setImage] = useState<any>("");
 	const { user, openCreatePost, setUserProfile, userProfile, setChangeProfile } = useContext(App);
 	const instance = axios.create({
-		baseURL: "http://localhost:4000",
+		baseURL: process.env.url,
 		withCredentials: true,
 		headers: { "Content-Type": "multipart/form-data" },
 	});

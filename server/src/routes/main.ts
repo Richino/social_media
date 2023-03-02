@@ -31,6 +31,14 @@ router.get("/", auth, async (req: IRequest, res: Response) => {
 					},
 				},
 				{
+					$lookup: {
+						from: "comments",
+						localField: "_id",
+						foreignField: "post",
+						as: "comments_info",
+					},
+				},
+				{
 					$sort: { createdAt: -1 },
 				},
 				{ $limit: 15 },
@@ -43,13 +51,13 @@ router.get("/", auth, async (req: IRequest, res: Response) => {
 						_id: 1,
 						caption: 1,
 						likes: 1,
-						comments: 1,
 						author: 1,
+						comments: { $size: "$comments_info" },
 					}, //
 				},
 			])
 			.toArray();
-
+		console.log(feeds);
 		const notifications = await client
 			.collection("notifications")
 			.aggregate([

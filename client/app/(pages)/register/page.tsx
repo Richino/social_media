@@ -4,10 +4,9 @@ import { useRouter } from "next/navigation";
 import Gallery from "../../../components/common/gallery";
 import Link from "next/link";
 import axios from "axios";
-import { MoonLoader } from "react-spinners";
 export default function Page() {
 	const instance = axios.create({
-		baseURL: "http://localhost:4000",
+		baseURL: process.env.url,
 		withCredentials: true,
 	});
 	const router = useRouter();
@@ -50,14 +49,12 @@ export default function Page() {
 	}
 
 	return (
-		<div className="relative flex h-screen w-screen overflow-hidden bg-slate-50 text-xs">
+		<div className="relative flex h-screen w-screen overflow-y-auto  text-xs phone:items-center phone:justify-center">
 			<div
 				onSubmit={register}
 				className=" margin-b-24 grid w-[38vw] min-w-[500px] place-items-center overflow-y-auto p-14 phone:w-full phone:min-w-[100%] phone:landscape:block phone:landscape:min-w-[400px] phone:landscape:p-10 ">
 				<form className="flex w-[80%] flex-col space-y-5 text-zinc-800 phone:w-[100%] phone:landscape:w-[100%]">
-					<span className="text-4xl font-bold text-zinc-700">
-						Register
-					</span>
+					<span className="text-4xl font-bold text-zinc-700">Register</span>
 					<div className="flex flex-col space-y-1">
 						<span>Username</span>
 						<input
@@ -117,9 +114,7 @@ export default function Page() {
 						<div className="flex items-center space-x-2">
 							<button
 								className={`flex w-10 min-w-[40px] items-center rounded-full transition-colors hover:cursor-pointer ${
-									isChecked
-										? "bg-violet-600"
-										: "bg-slate-400 "
+									isChecked ? "bg-violet-600" : "bg-slate-400 "
 								}`}
 								onClick={(e) => {
 									e.preventDefault();
@@ -127,9 +122,7 @@ export default function Page() {
 								}}>
 								<div
 									className={`m-[2px] h-5 w-5 rounded-full bg-white  transition-transform ${
-										isChecked
-											? "translate-x-4"
-											: "translate-x-0"
+										isChecked ? "translate-x-4" : "translate-x-0"
 									}`}></div>
 							</button>
 							<span>Keep me signed in</span>
@@ -141,9 +134,7 @@ export default function Page() {
 							</Link>
 						</div>
 					</div>
-					<button
-						className="mb-10 w-full rounded bg-violet-600 p-2 text-white"
-						onClick={register}>
+					<button className="mb-10 w-full rounded bg-violet-600 p-2 text-white" onClick={register}>
 						<span>{loading ? "Loading..." : "Register"}</span>
 					</button>
 					<div className="hidden phone:block landscape:block">
@@ -152,10 +143,7 @@ export default function Page() {
 							Login
 						</Link>
 					</div>
-					<span
-						className={`flex w-full justify-center text-red-500 ${
-							error ? "visible" : "invisible"
-						}`}>
+					<span className={`flex w-full justify-center text-red-500 ${error ? "visible" : "invisible"}`}>
 						{message}
 					</span>
 				</form>

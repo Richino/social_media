@@ -17,7 +17,7 @@ interface Props {
 	post: string;
 	caption: string;
 	likes: Array<string>;
-	comments: Array<Object>;
+	comments: number;
 	id: string;
 	author: string;
 	index: number;
@@ -25,7 +25,7 @@ interface Props {
 export default function PostFeed(props: Props) {
 	const { setPost, setUserPost, user, setUser, feed } = useContext(App);
 	const instance = axios.create({
-		baseURL: "http://localhost:4000",
+		baseURL: process.env.url,
 		withCredentials: true,
 	});
 	return (
@@ -39,7 +39,7 @@ export default function PostFeed(props: Props) {
 				<BsThreeDots size={16} className="hover:cursor-pointer" />
 			</div>
 			<div
-				className={`relative  w-full overflow-hidden   hover:cursor-pointer tablet:phone:rounded-none`}
+				className={`relative  w-full overflow-hidden   bg-black hover:cursor-pointer tablet:phone:rounded-none`}
 				onClick={() => {
 					let post = {
 						_id: props.id,
@@ -56,7 +56,13 @@ export default function PostFeed(props: Props) {
 				<Image
 					src={props.post}
 					alt="post"
-					style={{ objectFit: "contain", width: "100%", height: "auto", maxHeight: "640px" }}
+					style={{
+						objectFit: "cover",
+						width: "100%",
+						height: "auto",
+						maxHeight: "500px",
+						minHeight: "500px",
+					}}
 					width={1920}
 					height={1080}
 				/>
@@ -114,7 +120,11 @@ export default function PostFeed(props: Props) {
 				</span>
 			</div>
 			<button className="px-3 pt-2 text-neutral-500">
-				{props.comments.length ? `View all ${props.comments.length} comments` : "No comments"}
+				{props.comments == 1
+					? `View the ${props.comments} comment`
+					: props.comments > 1
+					? `View all ${props.comments} comments`
+					: "No comments"}
 			</button>
 		</div>
 	);
