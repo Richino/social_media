@@ -12,84 +12,61 @@ import { ObjectId } from "mongodb";
 const router = Router();
 const upload = multer();
 
-router.post("/post/upload", auth, upload.any(), async (req: IRequest, res: Response) => {
-	const caption = req.body.caption;
-	const author = req.user.id;
-	const client = await connectDB();
-	const session = client.startSession();
-	(await session).startTransaction();
-
-	try {
-		const metadata = {
-			contentType: "image/jpeg",
-		};
-		const storageRef = ref(storage, `${author}/${uuidv4()}`);
-		const bytes = new Uint8Array(req.files[0].buffer);
-		uploadBytes(storageRef, bytes, metadata)
-			.then(async (data) => {
-				const imageUrl = await getDownloadURL(ref(storage, data.metadata.fullPath));
-				const post = new Post({
-					author,
-					caption,
-					imageUrl,
-				});
-
-				post.save((err, post) => {
-					if (err) {
-						console.log(err);
-					}
-					client.close();
-					return res.status(200).json(post);
-				});
-			})
-			.catch((err) => {
-				if (err) res.status(500).send("Image failed to upload");
-			});
-	} catch (error) {
-		(await session).abortTransaction();
-	} finally {
-		(await session).endSession();
-	}
-});
-
-router.post("/profile/upload", auth, upload.single("image"), async (req: IRequest, res: Response) => {
-	const user = req.user.id;
-
-	const client = await connectDB();
-	const session = client.startSession();
-	(await session).startTransaction();
-
-	try {
-		const metadata = {
-			contentType: "image/jpeg",
-		};
-		const storageRef = ref(storage, `${user}/avatar/image`);
-		const bytes = new Uint8Array(req.file.buffer);
-		uploadBytes(storageRef, bytes, metadata).then(async (data) => {
-			const imageUrl = await getDownloadURL(ref(storage, data.metadata.fullPath));
-			await client
-				.collection("users")
-				.updateOne({ _id: new ObjectId(user) }, { $set: { avatar: imageUrl } })
-				.then(() => res.status(200).json(imageUrl));
-		});
-	} catch (error) {
-		(await session).abortTransaction();
-	} finally {
-		(await session).endSession();
-	}
-});
-
-router.post("/profile/delete", auth, async (req: IRequest, res: Response) => {
-	const user = req.user.id;
+router.post("/comments/:id", auth, async (req: IRequest, res: Response) => {
+	const post = req.params["id"];
+	console.log(post);
 	const client = await connectDB();
 	const session = client.startSession();
 	(await session).startTransaction();
 	try {
-		const imageUrl = await getDownloadURL(ref(storage, "default/default.png"));
-		await client
-			.collection("users")
-			.updateOne({ _id: new ObjectId(user) }, { $set: { avatar: imageUrl } })
-			.then(() => res.status(200).json(imageUrl));
+		const comments = await client
+			.collection("posts")
+			.aggregate([
+				{ $match: { _id: new ObjectId(post) } },
+				{
+					$lookup: {
+						from: "comments",
+						localField: "_id",
+						foreignField: "post",
+						as: "comments_info",
+					},
+				},
+				{
+					$unwind: "$comments_info",
+				},
+				{
+					$lookup: {
+						from: "users",
+						localField: "comments_info.author",
+						foreignField: "_id",
+						as: "comments_info.authorDetails",
+					},
+				},
+				{
+					$addFields: {
+						"comments_info.authorDetails": {
+							$arrayElemAt: ["$comments_info.authorDetails", 0],
+						},
+					},
+				},
+
+				{
+					$project: {
+						"comments_info.authorDetails.fullname": 1,
+						"comments_info.authorDetails.avatar": 1,
+						"comments_info.text": 1,
+						"comments_info.createdAt": 1,
+						createdAt: 1,
+					},
+				},
+				{
+					$sort: {
+						"comments_info.createdAt": -1,
+					},
+				},
+			])
+			.toArray();
+		return res.status(200).json(comments);
 	} catch (error) {
 		(await session).abortTransaction();
 	} finally {

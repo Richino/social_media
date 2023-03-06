@@ -45,14 +45,28 @@ export default function Post(props: Props) {
 	const [data, setData] = useState<Comments[]>([]);
 	const [show, setShow] = useState<number | null>();
 	const [popup, setPopup] = useState(false);
-	const [comments, setComments] = useState<number>(0);
+	const [loading, setLoading] = useState(false);
+
 	const [showPicker, setShowPicker] = useState(false);
 	const [text, setText] = useState("");
 	const [width, setWidth] = useState(window.innerWidth);
 	const pathname = usePathname();
-	const { setPost, user, userProfile } = useContext(App);
+	const { setPost, user, comments, setComments } = useContext(App);
+	const fetchData = async () => {
+		setLoading(true);
+		await instance
+			.post(`/post/comments/${props.id}`)
+			.then((res) => {
+				setLoading(false);
+				setComments(res.data);
+			})
+			.catch((err) => {
+				console.log(err.message);
+			});
+	};
 	useEffect(() => {
 		setData(post);
+		fetchData();
 		const handleResize = () => setWidth(window.innerWidth);
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
@@ -62,10 +76,32 @@ export default function Post(props: Props) {
 	const hidePost = (e: any) => {
 		if ((e.target as HTMLDivElement).id === "post-image-container") setPost(false);
 		if ((e.target as HTMLDivElement).id === "post-image-container-2") setPost(false);
+		setComments([]);
 	};
 
 	const hidePopup = (e: React.MouseEvent<HTMLDivElement>) =>
 		(e.target as HTMLDivElement).id === "popup" && setPopup(false);
+
+	const createdAt = (comment_timestamp: string) => {
+		const timestamp = new Date(comment_timestamp);
+		const difference = Date.now() - timestamp.getTime();
+		const timeUnits = {
+			y: 31536000000,
+			w: 604800000,
+			d: 86400000,
+			h: 3600000,
+			m: 60000,
+		};
+
+		for (const [unit, milliseconds] of Object.entries(timeUnits)) {
+			if (difference >= milliseconds) {
+				const numUnits = Math.floor(difference / milliseconds);
+				return `${numUnits}${unit}`;
+			}
+		}
+
+		return "Just now";
+	};
 
 	return (
 		<div
@@ -121,9 +157,9 @@ export default function Post(props: Props) {
 
 			<div
 				id="post-image-container"
-				className={` relative  flex h-full w-full items-center justify-center p-10 phone:mt-[83px] phone:p-0`}
+				className={` max-w[1526.84px]  relative flex h-full w-full items-center justify-center p-10 phone:mt-[83px] phone:p-0`}
 				onClick={hidePost}>
-				<div className="post-title relative  hidden place-items-center justify-between  bg-white p-5">
+				<div className="post-title relative  hidden place-items-center justify-between   p-5">
 					<BsChevronLeft size={24} className=" hover:cursor-pointer" onClick={() => setPost(false)} />
 					<span className="text-base">
 						<b>post</b>
@@ -132,7 +168,7 @@ export default function Post(props: Props) {
 				</div>
 				<div
 					id="post-image-container-2"
-					className="post-image-container relative flex h-full w-max items-center  justify-center bg-white transition-width">
+					className="post-image-container relative flex h-full  items-center  justify-center  transition-width">
 					<Image
 						priority
 						id="post-image"
@@ -196,41 +232,65 @@ export default function Post(props: Props) {
 						</div>
 					</div>
 				</div>
-				<div
-					className={`space-y-5  overflow-y-auto bg-neutral-100   p-5 ${
-						width > 600 && "h-[calc(100%-(83px+65px))]"
-					} phone:pb-[85px]`}>
-					{data?.map((key: any, postIndex: number) => {
-						return (
-							<div key={postIndex} className="flex gap-2  ">
-								<div className="flex max-w-[32px] flex-col items-center  gap-2  pb-2">
-									<div className="h-[32px] w-[32px]">
-										<Avatar height={32} width={32} image={key?.avatar} story={false} />
-									</div>
-									<div
-										className={`h-full rounded-bl-lg border-l   border-b border-neutral-300  ${
-											show === postIndex ? "ml-14 w-14" : "ml-4 w-4"
-										}`}></div>
-								</div>
-								<div className="flex w-full flex-col gap-2">
-									<div className="flex w-full flex-col gap-2 rounded-lg bg-white p-5 ">
-										<div className="flex justify-between">
-											<span>{key?.fullname}</span>
-											<BsThreeDots size={16} className="hover:cursor-pointer" />
-										</div>
-										<span className="leading-5 text-neutral-600">{key?.comment}</span>
-										<div className="flex items-center justify-between text-neutral-500">
-											<div className="flex items-center gap-2 ">
-												<button>Like</button>
-												<span>{key?.timestamp}</span>
+				{loading ? (
+					<div
+						className={`grid  place-items-center space-y-5 overflow-y-auto bg-neutral-100 p-5  text-base ${
+							width > 600 && "h-[calc(100%-(83px+65px))]"
+						} phone:pb-[85px]`}>
+						Loading...
+					</div>
+				) : (
+					<>
+						{comments.length === 0 ? (
+							<div
+								className={`grid  place-items-center space-y-5 overflow-y-auto bg-neutral-100 p-5  text-base ${
+									width > 600 && "h-[calc(100%-(83px+65px))]"
+								} phone:pb-[85px]`}>
+								Be the first to comment
+							</div>
+						) : (
+							<div
+								className={`space-y-5  overflow-y-auto bg-neutral-100   p-5 ${
+									width > 600 && "h-[calc(100%-(83px+65px))]"
+								} phone:pb-[85px]`}>
+								{comments.map((key: any, postIndex: number) => {
+									return (
+										<div key={postIndex} className="flex gap-2  ">
+											<div className="flex max-w-[32px] flex-col items-center  gap-2  pb-2">
+												<div className="h-[32px] w-[32px]">
+													<Avatar
+														height={32}
+														width={32}
+														image={key.comments_info.authorDetails.avatar}
+														story={false}
+													/>
+												</div>
+												<div
+													className={`h-full rounded-bl-lg border-l   border-b border-neutral-300  ${
+														show === postIndex ? "ml-14 w-14" : "ml-4 w-4"
+													}`}></div>
 											</div>
-											<div className="flex items-center gap-2">
-												<AiOutlineHeart size={12} />
-												<span>{key?.likes}</span>
-											</div>
-										</div>
-									</div>
-									<button
+											<div className="flex w-full flex-col gap-2">
+												<div className="flex w-full flex-col gap-2 rounded-lg bg-white p-5 ">
+													<div className="flex justify-between">
+														<span>{key.comments_info.authorDetails.fullname}</span>
+														<BsThreeDots size={16} className="hover:cursor-pointer" />
+													</div>
+													<span className="leading-5 text-neutral-600">
+														{key.comments_info.text}
+													</span>
+													<div className="flex items-center justify-between text-neutral-500">
+														<div className="flex items-center gap-2 ">
+															<button>Like</button>
+															<span>{createdAt(key.comments_info.createdAt)}</span>
+														</div>
+														<div className="flex items-center gap-2">
+															<AiOutlineHeart size={12} />
+															<span>{key?.likes}</span>
+														</div>
+													</div>
+												</div>
+												{/*<button
 										className={` items-center gap-2 text-neutral-500 ${
 											key?.replies.length ? "flex" : "hidden"
 										}`}
@@ -245,8 +305,8 @@ export default function Post(props: Props) {
 											{show === postIndex ? "Hide replies" : "View replies"}({key?.replies.length}
 											)
 										</span>
-									</button>
-									{key.replies
+									</button>}
+									{/*key.replies
 										? key.replies.map((key: any, repliesIndex: number) => {
 												return (
 													<div
@@ -279,15 +339,18 @@ export default function Post(props: Props) {
 													</div>
 												);
 										  })
-										: null}
-								</div>
+										: null */}
+											</div>
+										</div>
+									);
+								})}
 							</div>
-						);
-					})}
-				</div>
+						)}
+					</>
+				)}
 
 				<div className="flex w-full  flex-col  items-center gap-2  border-t border-neutral-200 phone:hidden">
-					<div className="flex w-full  items-center  justify-between gap-2 border-t border-neutral-200 p-5">
+					<div className="flex w-full  items-center  justify-between gap-2 border-t border-neutral-200 p-5  ">
 						<AiOutlineHeart size={24} className="text-neutral-400" />
 						<input
 							type="text"

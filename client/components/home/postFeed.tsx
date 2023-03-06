@@ -39,7 +39,7 @@ export default function PostFeed(props: Props) {
 				<BsThreeDots size={16} className="hover:cursor-pointer" />
 			</div>
 			<div
-				className={`relative  w-full overflow-hidden   bg-black hover:cursor-pointer tablet:phone:rounded-none`}
+				className={`relative  aspect-[4/5] w-full   overflow-hidden bg-black hover:cursor-pointer tablet:phone:rounded-none`}
 				onClick={() => {
 					let post = {
 						_id: props.id,
@@ -59,12 +59,12 @@ export default function PostFeed(props: Props) {
 					style={{
 						objectFit: "cover",
 						width: "100%",
-						height: "auto",
-						maxHeight: "500px",
-						minHeight: "500px",
+						height: "100%",
 					}}
 					width={1920}
 					height={1080}
+					priority
+					sizes="(max-width: 500px) 100vw"
 				/>
 			</div>
 			<div className="flex items-center justify-between p-3 py-2">

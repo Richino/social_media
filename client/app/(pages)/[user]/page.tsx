@@ -81,7 +81,6 @@ export default function Page({ params }: any) {
 							<div
 								className="h-[100px] w-[100px]"
 								onClick={() => {
-									console.log(user.user?._id, userProfile.user._id);
 									if (user.user._id !== userProfile.user._id) return;
 									setChangeProfile(true);
 								}}>
@@ -100,7 +99,6 @@ export default function Page({ params }: any) {
 												<button
 													className="rounded bg-violet-500 p-1 px-5 text-white tablet:phone:w-full"
 													onClick={async () => {
-														console.log("here");
 														const index = userProfile.user.followers.indexOf(
 															user.user?._id
 														);

@@ -57,10 +57,7 @@ input {
 	height: calc(100% - (56px + 65px));
 }
 
-.main {
-	min-height: fill-available;
-	min-height: -webkit-fill-available;
-}
+
 
 @media screen and (max-width: 600px) {
 	.comments {
@@ -96,11 +93,7 @@ input {
 		max-width: none;
 	}
 
-	.main {
-		height: 100%;
-		min-height: fill-available;
-		min-height: -webkit-fill-available;
-	}
+
 
 	.message-button-circle {
 		display: grid;

@@ -6,9 +6,10 @@ import register from "./routes/register.js";
 import login from "./routes/login.js";
 import user from "./routes/user.js";
 import user_controller from "./controllers/user.js";
-import post from "./controllers/post.js";
+import image from "./controllers/image.js";
 import search from "./controllers/search.js";
 import feeds from "./controllers/feeds.js";
+import post from "./controllers/post.js";
 import "dotenv/config";
 const app = express();
 const PORT = 4000;
@@ -31,10 +32,11 @@ app.use("/login", login);
 app.use("/user", user);
 
 //controllers//
-app.use("/image", post);
+app.use("/image", image);
 app.use("/search", search);
 app.use("/main_user", user_controller);
 app.use("/feeds", feeds);
+app.use("/post", post);
 
 //app.listen(PORT, process.env["IP"], () => console.log("server started "));
 app.listen(PORT, () => console.log("server started "));

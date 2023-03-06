@@ -22,6 +22,8 @@ export const App = createContext<any>({
 	setMobileNav: () => {},
 	notifications: { loading: true, data: [] },
 	setNotifications: () => {},
+	comments: [],
+	setComents: () => {},
 });
 
 export const useMyContext = () => {
@@ -36,10 +38,13 @@ export const useMyContext = () => {
 	const [userPost, setUserPost] = useState({});
 	const [changeProfile, setChangeProfile] = useState(false);
 	const [users, setUsers] = useState([]);
+	const [comments, setComments] = useState([]);
 	const [isOpen, setIsOpen] = useState(false);
 	const [mobileNav, setMobileNav] = useState(false);
 	const [notifications, setNotifications] = useState({ loading: true, data: [] });
 	return {
+		comments,
+		setComments,
 		notifications,
 		setNotifications,
 		post,

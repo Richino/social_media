@@ -22,9 +22,7 @@ export default function Nav() {
 
 	useEffect(() => {
 		function handleClickOutside(e: MouseEvent) {
-			if (navbarRef.current && !navbarRef.current.contains(e.target as HTMLDivElement)) {
-				setIsOpen(false);
-			}
+			if (navbarRef.current && !navbarRef.current.contains(e.target as HTMLDivElement)) setIsOpen(false);
 		}
 
 		document.addEventListener("mousedown", handleClickOutside);
@@ -46,7 +44,7 @@ export default function Nav() {
 							</Link>
 						)}
 					</div>
-					<div className="h-full w-[500px] nestHub:w-[400px]">
+					<div className="h-full w-[400px] ">
 						<Search placeholder="Search here..." type="nav" mobile={false} />
 						{isOpen && (
 							<div

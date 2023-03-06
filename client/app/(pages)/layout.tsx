@@ -60,27 +60,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	}, [pathname]);
 
 	return (!user?.loading && user.user) || pathname === "/login" || pathname === "/register" ? (
-		<div
-			ref={ref}
-			onScroll={async () => {
-				if (pathname != "/") return;
-				const div = ref.current;
-				if (div != undefined) {
-					const result: number = div?.scrollHeight - div?.scrollTop;
-					if (result <= 3029 && !loading) {
-						setSkip((current) => current + 15);
-						setLoading(true);
-						await instance
-							.post("/feeds", { skip })
-							.then((res) => {
-								console.log(res.data);
-								setUser({ ...user, feed: [...user.feed, ...res.data] });
-							})
-							.finally(() => setLoading(false));
-					}
-				}
-			}}
-			className="main h-screen w-full  overflow-hidden tablet:flex tablet:phone:block">
+		<div ref={ref} className="mai h-screen w-full  overflow-hidden tablet:flex tablet:phone:block">
 			{pathname === "/login" || pathname === "/register" ? null : <Nav />}
 			{pathname === "/login" || pathname === "/register" ? null : <Sidenav />}
 			{createPost && <Create />}
